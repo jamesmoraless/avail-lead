@@ -98,7 +98,8 @@ export function HomeCurtain() {
       <div className="absolute pointer-events-none" style={{ left: 40, top: 300, width: 360, height: 420, background: "linear-gradient(160deg, rgba(246,214,170,.5), rgba(246,214,170,0) 70%)", clipPath: "polygon(8% 0, 92% 0, 100% 100%, 20% 100%)", opacity: open * 0.9, transition: drag.current ? "none" : "opacity .8s ease", mixBlendMode: "multiply" }} />
       <StatusBar />
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        <div className="px-[26px] pt-[16px] flex justify-center av-fade d1">
+        {/* the leaf has a little air on its left; pull it in so it lines up with the greeting */}
+        <div className="pl-[22px] pr-[26px] pt-[16px] av-fade d1">
           <Wordmark size={23} />
         </div>
 

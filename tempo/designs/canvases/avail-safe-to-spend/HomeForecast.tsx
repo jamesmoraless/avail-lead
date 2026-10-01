@@ -155,7 +155,8 @@ export function HomeForecast() {
     <Phone>
       <StatusBar />
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        <div className="px-[26px] pt-[16px] flex justify-center av-fade d1">
+        {/* the leaf has a little air on its left; pull it in so it lines up with the greeting */}
+        <div className="pl-[22px] pr-[26px] pt-[16px] av-fade d1">
           <Wordmark size={23} />
         </div>
 
