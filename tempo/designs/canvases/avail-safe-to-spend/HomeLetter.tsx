@@ -65,11 +65,12 @@ export function HomeLetter() {
         <div className="w-full av-fade d1">
           <HomeHeader />
         </div>
-        <div className="relative av-rise d2 mt-[22px]" style={{ perspective: 1400, width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
-          {/* the note, open: top half */}
-          {open && (
-          <div key="open-top" className="av-unfold">
-          <div className="relative px-[30px] pt-[26px] pb-[14px]" style={{ background: paper, borderRadius: "3px 3px 0 0", boxShadow: paperShadow }}>
+        <div className="relative av-rise d2 mt-[22px]" style={{ width: 318, cursor: "pointer", transform: "rotate(-1.2deg)", background: paper, borderRadius: 3, boxShadow: paperShadow, overflow: "hidden" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
+          {/* the note, open: its height eases between closed and open, so nothing below jumps */}
+          <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .6s cubic-bezier(.32,.72,0,1)" }}>
+          <div style={{ minHeight: 0, overflow: "hidden" }}>
+          <div style={{ opacity: open ? 1 : 0, transform: open ? "none" : "translateY(-12px)", transition: open ? "opacity .4s ease .15s, transform .6s cubic-bezier(.32,.72,0,1)" : "opacity .18s ease, transform .5s cubic-bezier(.32,.72,0,1)" }}>
+          <div className="relative px-[30px] pt-[26px] pb-[14px]">
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
               Good morning, Todd.
             </div>
@@ -107,13 +108,8 @@ export function HomeLetter() {
               </div>
             </div>
           </div>
-          </div>
-          )}
-
-          {/* the note, open: bottom half */}
-          {open && (
-          <div key="open-bottom" className="relative av-unfold" style={{ animationDelay: ".08s" }}>
-            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ background: "linear-gradient(180deg,#F3EDE2 0%,#FBF7EF 14%,#FFFDF8 100%)", borderRadius: "0 0 3px 3px", boxShadow: paperShadow }}>
+          <div className="relative">
+            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ background: "linear-gradient(180deg,#F3EDE2 0%,#FBF7EF 14%,#FFFDF8 100%)" }}>
               <Section>{allDone ? "Both done." : "Two small things"}</Section>
               {[
                 ["Move $120 to savings", ""],
@@ -155,11 +151,14 @@ export function HomeLetter() {
               </div>
             </div>
           </div>
-          )}
+          </div>
+          </div>
+          </div>
 
           {/* the note, folded: just the outside, addressed to Todd */}
-          {!open && (
-            <div key="folded" className="relative px-[30px] h-[112px] flex items-center justify-between av-fade" style={{ background: "linear-gradient(180deg,#FBF7EF,#F6F0E5)", borderRadius: 3, boxShadow: paperShadow }}>
+          <div style={{ display: "grid", gridTemplateRows: open ? "0fr" : "1fr", transition: "grid-template-rows .6s cubic-bezier(.32,.72,0,1)" }} aria-hidden={open}>
+          <div style={{ minHeight: 0, overflow: "hidden" }}>
+            <div className="relative px-[30px] h-[112px] flex items-center justify-between" style={{ background: "linear-gradient(180deg,#FBF7EF,#F6F0E5)", opacity: open ? 0 : 1, transition: open ? "opacity .18s ease" : "opacity .4s ease .2s" }}>
               <Hand size={32} tone={C.fern} rotate={-2}>
                 for Todd
               </Hand>
@@ -167,7 +166,8 @@ export function HomeLetter() {
                 tap to open
               </span>
             </div>
-          )}
+          </div>
+          </div>
         </div>
 
         {/* a letter comes every morning; the earlier ones collect here, folded */}
