@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Quote, Greeting, Hero, Support, HomeHeader } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Quote, Greeting, Hero, Support, HomeHeader, Sheet } from "./_kit";
 
 /* R3 · The Forecast.
    "Can I afford this?" answered the way people already talk about the days
@@ -191,69 +191,70 @@ export function HomeForecast() {
           </svg>
         </div>
 
-        {/* ---------- can I afford it? a shelf of everyday things ---------- */}
-        <div className="px-[26px] mt-[26px] av-rise d5">
-          <div className="av-serif" style={{ fontSize: 20, color: T.ink, lineHeight: 1.3 }}>
-            Thinking of something?
-          </div>
+        <Sheet className="mt-[22px]">
+          {/* ---------- can I afford it? a shelf of everyday things ---------- */}
+          <div className="px-[26px] mt-[8px] av-rise d5">
+            <div className="av-serif" style={{ fontSize: 20, color: T.ink, lineHeight: 1.3 }}>
+              Thinking of something?
+            </div>
 
-          {/* the shelf */}
-          <div className="relative mt-[14px]">
-            <div className="grid grid-cols-4">
-              {TRIES.map(([name], n) => {
-                const on = item === n;
-                const dim = item !== null && !on;
-                return (
-                  <button key={name} className="av-press flex flex-col items-center cursor-pointer" onClick={() => pick(n)} style={{ opacity: dim ? 0.45 : 1, transition: "opacity .4s" }}>
-                    <div className="relative" style={{ transform: `translateY(${on ? -8 : 0}px)`, transition: "transform .6s cubic-bezier(.3,1.4,.5,1)" }}>
-                      {/* a soft wash behind the one you're weighing */}
-                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: 84, height: 84, background: "radial-gradient(circle, rgba(246,224,198,.9) 0%, rgba(246,224,198,0) 70%)", opacity: on ? 1 : 0, transition: "opacity .5s" }} />
-                      <div className="relative">
-                        <Thing kind={n} on={on} />
+            {/* the shelf */}
+            <div className="relative mt-[14px]">
+              <div className="grid grid-cols-4">
+                {TRIES.map(([name], n) => {
+                  const on = item === n;
+                  const dim = item !== null && !on;
+                  return (
+                    <button key={name} className="av-press flex flex-col items-center cursor-pointer" onClick={() => pick(n)} style={{ opacity: dim ? 0.45 : 1, transition: "opacity .4s" }}>
+                      <div className="relative" style={{ transform: `translateY(${on ? -8 : 0}px)`, transition: "transform .6s cubic-bezier(.3,1.4,.5,1)" }}>
+                        {/* a soft wash behind the one you're weighing */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: 84, height: 84, background: "radial-gradient(circle, rgba(246,224,198,.9) 0%, rgba(246,224,198,0) 70%)", opacity: on ? 1 : 0, transition: "opacity .5s" }} />
+                        <div className="relative">
+                          <Thing kind={n} on={on} />
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-[12px] text-[13px]" style={{ color: on ? T.ink : C.muted, fontWeight: on ? 500 : 400, transition: "color .3s" }}>
-                      {name}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            {/* the oak ledge they sit on */}
-            <div className="absolute left-[0px] right-[0px] h-[5px] rounded-full" style={{ top: 55, background: "linear-gradient(180deg,#D9BF98,#C2A276)", boxShadow: "0 4px 6px -4px rgba(92,66,36,.4)" }} />
-          </div>
-
-          <div className="mt-[14px] text-[12.5px]" style={{ color: C.muted, opacity: fc ? 0 : 1, maxHeight: fc ? 0 : 20, overflow: "hidden", transition: "opacity .3s, max-height .4s" }}>
-            Tap one to see how the week's weather changes.
-          </div>
-
-          {/* how much, and what the sky says */}
-          <div style={{ marginTop: 16, maxHeight: fc ? 150 : 0, opacity: fc ? 1 : 0, overflow: "hidden", transition: "max-height .5s ease, opacity .4s ease" }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-baseline gap-[8px]">
-                <span className="text-[13px]" style={{ color: C.muted }}>
-                  about
-                </span>
-                <span className="av-tnum text-[24px]" style={{ color: T.ink, letterSpacing: "-0.02em" }}>
-                  ${amount}
-                </span>
+                      <div className="mt-[12px] text-[13px]" style={{ color: on ? T.ink : C.muted, fontWeight: on ? 500 : 400, transition: "color .3s" }}>
+                        {name}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-              <div className="flex items-center gap-[8px]">
-                {[-1, 1].map((d) => (
-                  <button key={d} aria-label={d < 0 ? "less" : "more"} className="av-press w-[34px] h-[34px] rounded-full flex items-center justify-center cursor-pointer" style={{ boxShadow: "inset 0 0 0 1px rgba(58,51,44,.16)", background: "rgba(253,251,246,.8)", color: T.ink, fontSize: 18, lineHeight: 1 }} onClick={() => nudge(d as 1 | -1)}>
-                    {d < 0 ? "−" : "+"}
-                  </button>
-                ))}
+              {/* the oak ledge they sit on */}
+              <div className="absolute left-[0px] right-[0px] h-[5px] rounded-full" style={{ top: 55, background: "linear-gradient(180deg,#D9BF98,#C2A276)", boxShadow: "0 4px 6px -4px rgba(92,66,36,.4)" }} />
+            </div>
+
+            <div className="mt-[14px] text-[12.5px]" style={{ color: C.muted, opacity: fc ? 0 : 1, maxHeight: fc ? 0 : 20, overflow: "hidden", transition: "opacity .3s, max-height .4s" }}>
+              Tap one to see how the week's weather changes.
+            </div>
+
+            {/* how much, and what the sky says */}
+            <div style={{ marginTop: 10, maxHeight: fc ? 150 : 0, opacity: fc ? 1 : 0, overflow: "hidden", transition: "max-height .5s ease, opacity .4s ease" }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-baseline gap-[8px]">
+                  <span className="text-[13px]" style={{ color: C.muted }}>
+                    about
+                  </span>
+                  <span className="av-tnum text-[24px]" style={{ color: T.ink, letterSpacing: "-0.02em" }}>
+                    ${amount}
+                  </span>
+                </div>
+                <div className="flex items-center gap-[8px]">
+                  {[-1, 1].map((d) => (
+                    <button key={d} aria-label={d < 0 ? "less" : "more"} className="av-press w-[34px] h-[34px] rounded-full flex items-center justify-center cursor-pointer" style={{ boxShadow: "inset 0 0 0 1px rgba(58,51,44,.16)", background: "rgba(253,251,246,.8)", color: T.ink, fontSize: 18, lineHeight: 1 }} onClick={() => nudge(d as 1 | -1)}>
+                      {d < 0 ? "−" : "+"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div key={fc ? fc.line : "x"} className="av-fade pl-[14px] mt-[12px]" style={{ borderLeft: `2px solid ${tone}` }}>
+                <Aside tone={tone} size={15}>
+                  {fc ? fc.line : ""}
+                </Aside>
               </div>
             </div>
-            <div key={fc ? fc.line : "x"} className="av-fade pl-[14px] mt-[12px]" style={{ borderLeft: `2px solid ${tone}` }}>
-              <Aside tone={tone} size={15}>
-                {fc ? fc.line : ""}
-              </Aside>
-            </div>
           </div>
-        </div>
-
+        </Sheet>
         <div className="absolute left-0 right-0 bottom-[118px] px-[40px]" style={{ opacity: asking ? 0 : 1, transition: "opacity .4s" }}>
           <Quote text="Enough is a feast." by="Buddhist proverb" align="center" />
         </div>

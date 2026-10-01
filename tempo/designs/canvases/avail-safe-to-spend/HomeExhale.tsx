@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support, HomeHeader } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support, HomeHeader, Sheet } from "./_kit";
 
 /* R1 · Exhale.
    A paper disc and your breath. HOLD the disc to breathe — an arc times
@@ -213,50 +213,52 @@ export function HomeExhale() {
           </div>
         </div>
 
-        {/* ---------- how does money feel? — a question, then three words ---------- */}
-        <div className="px-[32px] mt-[26px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
-          <Section>This morning, money feels</Section>
-          {/* three small objects: a stone, a leaf, a feather */}
-          <div className="grid grid-cols-3 gap-[10px] mt-[12px]">
-            {(["heavy", "okay", "light"] as Mood[]).map((w) => {
-              const on = mood === w;
-              const dim = mood && !on;
-              const lift = on ? (w === "heavy" ? 3 : w === "light" ? -6 : 0) : 0;
-              return (
-                <button
-                  key={w}
-                  className="av-press relative flex flex-col items-center gap-[6px] rounded-[18px] py-[10px] cursor-pointer"
-                  style={{ background: "rgba(253,251,246,.75)", boxShadow: on ? "none" : "inset 0 0 0 1px rgba(58,51,44,.08)", opacity: dim ? 0.6 : 1, transition: "box-shadow .4s ease, opacity .4s ease" }}
-                  onClick={() => setMood(on ? null : w)}
-                >
-                  {/* chosen: a wash of colour soaks into the tile */}
-                  <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: "visible" }}>
-                    <rect x="3" y="4" width="94" height="92" rx="16" fill={w === "heavy" ? "#C9D0CB" : w === "okay" ? "#CFDDBF" : "#F3DDB5"} opacity={on ? 0.95 : 0} className="av-wc" style={{ transition: "opacity .6s ease" }} />
-                  </svg>
-                  <span className={`relative ${on && w === "okay" ? "av-sway" : ""}`} style={{ display: "block", transform: `translateY(${lift}px)`, transition: "transform .7s cubic-bezier(.3,1.4,.5,1)", transformOrigin: "50% 90%" }}>
-                    <MoodObject kind={w} on={on} />
-                  </span>
-                  <span className="relative" style={{ fontSize: 13.5, color: on ? T.ink : C.muted, lineHeight: 1, fontWeight: 500, transition: "color .4s ease" }}>
-                    {w}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        <Sheet className="mt-[20px]">
+          {/* ---------- how does money feel? — a question, then three words ---------- */}
+          <div className="px-[32px] mt-[12px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
+            <Section>This morning, money feels</Section>
+            {/* three small objects: a stone, a leaf, a feather */}
+            <div className="grid grid-cols-3 gap-[10px] mt-[12px]">
+              {(["heavy", "okay", "light"] as Mood[]).map((w) => {
+                const on = mood === w;
+                const dim = mood && !on;
+                const lift = on ? (w === "heavy" ? 3 : w === "light" ? -6 : 0) : 0;
+                return (
+                  <button
+                    key={w}
+                    className="av-press relative flex flex-col items-center gap-[6px] rounded-[18px] py-[10px] cursor-pointer"
+                    style={{ background: "rgba(253,251,246,.75)", boxShadow: on ? "none" : "inset 0 0 0 1px rgba(58,51,44,.08)", opacity: dim ? 0.6 : 1, transition: "box-shadow .4s ease, opacity .4s ease" }}
+                    onClick={() => setMood(on ? null : w)}
+                  >
+                    {/* chosen: a wash of colour soaks into the tile */}
+                    <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: "visible" }}>
+                      <rect x="3" y="4" width="94" height="92" rx="16" fill={w === "heavy" ? "#C9D0CB" : w === "okay" ? "#CFDDBF" : "#F3DDB5"} opacity={on ? 0.95 : 0} className="av-wc" style={{ transition: "opacity .6s ease" }} />
+                    </svg>
+                    <span className={`relative ${on && w === "okay" ? "av-sway" : ""}`} style={{ display: "block", transform: `translateY(${lift}px)`, transition: "transform .7s cubic-bezier(.3,1.4,.5,1)", transformOrigin: "50% 90%" }}>
+                      <MoodObject kind={w} on={on} />
+                    </span>
+                    <span className="relative" style={{ fontSize: 13.5, color: on ? T.ink : C.muted, lineHeight: 1, fontWeight: 500, transition: "color .4s ease" }}>
+                      {w}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* the reply — the one line that speaks */}
-          <div className="mt-[18px]" style={{ minHeight: 26 }}>
-            <div key={(mood ?? "none") + String(allDone)} className="av-fade">
-              <Support>{allDone && m ? "That's the whole day. Go enjoy it." : m ? m.line : "Every bill is covered."}</Support>
+            {/* the reply — the one line that speaks */}
+            <div className="mt-[18px]" style={{ minHeight: 26 }}>
+              <div key={(mood ?? "none") + String(allDone)} className="av-fade">
+                <Support>{allDone && m ? "That's the whole day. Go enjoy it." : m ? m.line : "Every bill is covered."}</Support>
+              </div>
+            </div>
+
+            <div className="mt-[10px]">
+              {tasks.map((i, n) => (
+                <Task key={i} first={n === 0} title={TASKS[i].title} value={TASKS[i].value} py={11} done={done[i]} onToggle={() => setDone((d) => d.map((v, k) => (k === i ? !v : v)))} />
+              ))}
             </div>
           </div>
-
-          <div className="mt-[10px]">
-            {tasks.map((i, n) => (
-              <Task key={i} first={n === 0} title={TASKS[i].title} value={TASKS[i].value} py={11} done={done[i]} onToggle={() => setDone((d) => d.map((v, k) => (k === i ? !v : v)))} />
-            ))}
-          </div>
-        </div>
+        </Sheet>
       </div>
       <TabBar active="today" />
     </Phone>

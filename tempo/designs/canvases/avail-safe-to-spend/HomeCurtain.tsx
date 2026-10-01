@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Hero, Section, Support, HomeHeader } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Hero, Section, Support, HomeHeader, Sheet } from "./_kit";
 
 /* R2 · The Curtain.
    The number is the hero, above the window. The curtain is drawn; behind it,
@@ -8,7 +8,7 @@ import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, 
    number and the arithmetic change together. */
 
 const PANE_W = 330;
-const PANE_H = 206;
+const PANE_H = 188;
 const MIN_W = 30; // curtain gathered at the left
 const MAX_W = PANE_W; // curtain fully drawn
 
@@ -222,31 +222,33 @@ export function HomeCurtain() {
           </div>
         </div>
 
-        {/* ---------- the cushion: a stack of pillows you can add to ---------- */}
-        <div className="px-[30px] mt-[18px] flex items-center gap-[16px] av-rise d4">
-          <PillowStack count={cushion + 1} onTap={() => setCushion((v) => (v + 1) % 3)} />
-          <div className="flex-1 min-w-0">
-            <div key={c.label} className="av-fade">
-              <div className="flex items-baseline gap-[8px]">
-                <span className="text-[15px] font-medium" style={{ color: T.ink, lineHeight: 1.2 }}>
-                  {c.label[0].toUpperCase() + c.label.slice(1)} cushion
-                </span>
-                <span className="av-tnum text-[13px]" style={{ color: C.muted }}>
-                  {c.pct} held back
-                </span>
-              </div>
-              <div className="text-[12.5px] mt-[4px]" style={{ color: C.muted }}>
-                {c.note}
+        <Sheet className="mt-[14px]">
+          {/* ---------- the cushion: a stack of pillows you can add to ---------- */}
+          <div className="px-[30px] mt-[8px] flex items-center gap-[16px] av-rise d4">
+            <PillowStack count={cushion + 1} onTap={() => setCushion((v) => (v + 1) % 3)} />
+            <div className="flex-1 min-w-0">
+              <div key={c.label} className="av-fade">
+                <div className="flex items-baseline gap-[8px]">
+                  <span className="text-[15px] font-medium" style={{ color: T.ink, lineHeight: 1.2 }}>
+                    {c.label[0].toUpperCase() + c.label.slice(1)} cushion
+                  </span>
+                  <span className="av-tnum text-[13px]" style={{ color: C.muted }}>
+                    {c.pct} held back
+                  </span>
+                </div>
+                <div className="text-[12.5px] mt-[4px]" style={{ color: C.muted }}>
+                  {c.note}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="px-[30px] mt-[14px] av-rise d5">
-          <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things today"}</Section>
-          <Task first title="Move $120 to savings" value="$120" py={12} done={done[0]} onToggle={() => setDone([!done[0], done[1]])} />
-          <Task title="Pay the electric bill" value="$142.36" py={12} done={done[1]} onToggle={() => setDone([done[0], !done[1]])} />
-        </div>
+          <div className="px-[30px] mt-[14px] av-rise d5">
+            <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things today"}</Section>
+            <Task first title="Move $120 to savings" value="$120" py={11} done={done[0]} onToggle={() => setDone([!done[0], done[1]])} />
+            <Task title="Pay the electric bill" value="$142.36" py={11} done={done[1]} onToggle={() => setDone([done[0], !done[1]])} />
+          </div>
+        </Sheet>
       </div>
       <TabBar active="today" />
     </Phone>

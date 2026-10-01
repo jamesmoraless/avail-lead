@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support, HomeHeader } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support, HomeHeader, Sheet } from "./_kit";
 
 /* R5 · The Horizon.
    The week to payday is a sunrise. The sun sits low on Monday and climbs
@@ -180,10 +180,8 @@ export function HomePath() {
         </div>
 
         {/* ---------- this week, on the paper below the grass ---------- */}
-        <div className="relative px-[26px] pt-[10px] pb-[20px] av-rise d5" style={{ background: C.cream, marginTop: -18, minHeight: 300 }}>
-          <svg className="absolute left-0 right-0" style={{ top: -10, width: "100%", height: 22 }} viewBox="0 0 390 22" preserveAspectRatio="none">
-            <path d="M-10 12 C 60 2, 130 14, 200 8 S 330 2, 400 10 V30 H-10 Z" fill={C.cream} className="av-wc" />
-          </svg>
+        <Sheet className="av-rise d5" style={{ marginTop: -26 }}>
+          <div className="px-[26px] pt-[8px] pb-[20px]">
           <Section>This week</Section>
           {[
             { k: electricDay, title: "Electric", amt: "$209" },
@@ -214,7 +212,8 @@ export function HomePath() {
               </span>
             </div>
           ))}
-        </div>
+          </div>
+        </Sheet>
       </div>
       <TabBar active="today" />
     </Phone>

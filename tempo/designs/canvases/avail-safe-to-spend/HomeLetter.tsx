@@ -62,7 +62,9 @@ export function HomeLetter() {
 
       {/* ---------- the note, centred on the desk ---------- */}
       <div className="relative z-10 h-full pt-[44px] pb-[88px] flex items-center justify-center">
-        <div className="av-rise d2" style={{ perspective: 1400, width: 312, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
+        <div className="relative av-rise d2" style={{ perspective: 1400, width: 312, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
+          {/* a second sheet underneath: yesterday's note, left in the stack */}
+          <div className="absolute inset-0 pointer-events-none" style={{ transform: "rotate(3.2deg) translate(10px, 12px)", background: "linear-gradient(180deg,#F7F2E8,#F2ECE0)", borderRadius: 3, boxShadow: "0 18px 30px -24px rgba(92,66,36,.5), 0 1px 2px rgba(92,66,36,.1)" }} />
           {/* top half */}
           <div className="relative px-[30px] pt-[26px] pb-[14px]" style={{ background: paper, borderRadius: "3px 3px 0 0", boxShadow: paperShadow }}>
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
