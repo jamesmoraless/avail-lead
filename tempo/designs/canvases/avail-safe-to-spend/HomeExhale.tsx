@@ -107,12 +107,13 @@ export function HomeExhale() {
 
   const grown = phase === "in";
   const revealed = phase !== "idle";
-  const ready = phase === "done";
+  // the rest of the morning appears as you breathe out, not after
+  const ready = phase === "out" || phase === "done";
   const m = mood ? MOOD[mood] : null;
   const tasks = m ? m.tasks : [0, 1];
   const allDone = tasks.every((i) => done[i]);
   const ease = `${grown ? 4 : 3.4}s cubic-bezier(.45,.02,.3,1)`;
-  const caption = phase === "idle" ? "Press and hold. Breathe in." : phase === "in" ? "Breathe in…" : phase === "out" ? "…and let it go." : flipped ? "tap to turn it back" : "";
+  const caption = phase === "idle" ? "Press and hold. Breathe in." : phase === "in" ? "Breathe in…" : phase === "out" ? "…and let it go." : flipped ? "tap to turn it back" : "tap to see how";
 
   return (
     <Phone light={false}>
@@ -128,13 +129,13 @@ export function HomeExhale() {
           <Wordmark size={26} />
         </div>
 
-        <div className="px-[26px] mt-[26px] text-center av-rise d2">
+        <div className="px-[26px] mt-[24px] text-center av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
         </div>
 
         {/* ---------- the disc ---------- */}
         <div
-          className="relative mx-auto mt-[14px] flex items-center justify-center"
+          className="relative mx-auto mt-[16px] flex items-center justify-center"
           style={{ width: 300, height: 256, cursor: "pointer", touchAction: "none", perspective: 900 }}
           role="button"
           tabIndex={0}
@@ -177,7 +178,7 @@ export function HomeExhale() {
                 <div className="av-tnum" style={{ fontSize: 54, lineHeight: 1, color: C.fern, letterSpacing: "-0.04em" }}>
                   $2,487
                 </div>
-                <div className="av-serif italic text-[15px] mt-[6px]" style={{ color: "#7A5E45" }}>
+                <div className="av-serif italic text-[15px] mt-[8px]" style={{ color: "#5E4630" }}>
                   is yours today
                 </div>
               </div>
@@ -190,9 +191,9 @@ export function HomeExhale() {
                 how we got here
               </Hand>
               {[
-                ["in your accounts", "$4,319"],
-                ["bills before Friday", "− $1,684"],
-                ["cushion and goals", "− $147"],
+                ["in your accounts", "$4,318.90"],
+                ["bills before Friday", "− $1,684.20"],
+                ["cushion and goals", "− $147.34"],
               ].map(([k, v], i) => (
                 <div key={k} className="w-full flex items-baseline justify-between gap-[8px] whitespace-nowrap" style={{ marginTop: i ? 4 : 8, paddingTop: i ? 4 : 0, borderTop: i ? `1px solid ${C.line}` : "none" }}>
                   <span className="text-[12px]" style={{ color: C.muted }}>
@@ -208,7 +209,7 @@ export function HomeExhale() {
                   yours
                 </span>
                 <span className="av-serif av-tnum text-[14px]" style={{ color: C.fern }}>
-                  $2,487
+                  $2,487.36
                 </span>
               </div>
             </div>
@@ -224,7 +225,7 @@ export function HomeExhale() {
         </div>
 
         {/* the separator is a breath: rings spreading from a still centre */}
-        <div className="flex justify-center mt-[6px]" aria-hidden>
+        <div className="flex justify-center mt-[8px]" aria-hidden>
           <svg width="120" height="22" viewBox="0 0 120 22" fill="none">
             <path d="M8 11 H44" stroke="url(#exL)" strokeWidth="1" />
             <path d="M76 11 H112" stroke="url(#exR)" strokeWidth="1" />
@@ -243,7 +244,7 @@ export function HomeExhale() {
           <div className="px-[30px] pt-[8px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
             <Section className="text-center">This morning, money feels</Section>
             {/* three small objects: a stone, a leaf, a feather */}
-            <div className="grid grid-cols-3 gap-[10px] mt-[12px]">
+            <div className="grid grid-cols-3 gap-[12px] mt-[12px]">
               {(["heavy", "okay", "light"] as Mood[]).map((w) => {
                 const on = mood === w;
                 const dim = mood && !on;
@@ -251,7 +252,7 @@ export function HomeExhale() {
                 return (
                   <button
                     key={w}
-                    className="av-press relative flex flex-col items-center gap-[6px] rounded-[18px] py-[10px] cursor-pointer"
+                    className="av-press relative flex flex-col items-center gap-[8px] rounded-[18px] py-[10px] cursor-pointer"
                     style={{ background: "rgba(253,251,246,.75)", boxShadow: on ? "none" : "inset 0 0 0 1px rgba(58,51,44,.08)", opacity: dim ? 0.6 : 1, transition: "box-shadow .4s ease, opacity .4s ease" }}
                     aria-pressed={on}
                     aria-label={`Money feels ${w}`}
@@ -273,13 +274,13 @@ export function HomeExhale() {
             </div>
 
             {/* the reply — the one line that speaks */}
-            <div className="mt-[18px]" style={{ minHeight: 26 }}>
+            <div className="mt-[20px]" style={{ minHeight: 26 }}>
               <div key={(mood ?? "none") + String(allDone)} className="av-fade">
                 <Support className="text-center">{allDone && m ? "That's the whole day. Go enjoy it." : m ? m.line : "Every bill is covered."}</Support>
               </div>
             </div>
 
-            <div className="mt-[10px]">
+            <div className="mt-[12px]">
               {tasks.map((i, n) => (
                 <Task key={i} first={n === 0} title={TASKS[i].title} value={TASKS[i].value} py={11} done={done[i]} onToggle={() => setDone((d) => d.map((v, k) => (k === i ? !v : v)))} />
               ))}

@@ -13,9 +13,9 @@ const MIN_W = 30; // curtain gathered at the left
 const MAX_W = PANE_W; // curtain fully drawn
 
 const CUSHION = [
-  { label: "thin", pct: "1%", held: 34.2, number: "$2,521", note: "More to spend, closer to the edge.", angle: -52 },
-  { label: "snug", pct: "2%", held: 68.4, number: "$2,487", note: "Room to breathe, nothing wasted.", angle: 0 },
-  { label: "deep", pct: "4%", held: 136.8, number: "$2,418", note: "Less to spend, quieter nights.", angle: 52 },
+  { label: "thin", pct: "1%", held: 34.2, exact: "$2,521.56", number: "$2,522", note: "More to spend, closer to the edge.", angle: -52 },
+  { label: "snug", pct: "2%", held: 68.4, exact: "$2,487.36", number: "$2,487", note: "Room to breathe, nothing wasted.", angle: 0 },
+  { label: "deep", pct: "4%", held: 136.8, exact: "$2,418.96", number: "$2,419", note: "Less to spend, quieter nights.", angle: 52 },
 ];
 
 /** Your cushion, literally: a stack of one, two or three soft pillows. Tap to add one; past three it resets. */
@@ -107,7 +107,7 @@ export function HomeCurtain() {
           <Hero key={c.number} className="av-count mt-[16px]">
             {c.number}
           </Hero>
-          <Support className="mt-[9px]">is yours today. Every bill is covered.</Support>
+          <Support className="mt-[8px]">is yours today. Every bill is covered.</Support>
         </div>
 
         {/* ---------- a Scandinavian window: white frame, a cross in the glass, a pot on the sill ---------- */}
@@ -142,7 +142,7 @@ export function HomeCurtain() {
 
               {/* how we got here: a note taped to the glass */}
               <div
-                className="absolute rounded-[3px] px-[16px] pt-[14px] pb-[11px]"
+                className="absolute rounded-[3px] px-[16px] pt-[16px] pb-[12px]"
                 style={{ left: MIN_W + 14, right: 74, top: 20, background: "#FFFDF8", transform: `rotate(-1.2deg) translateX(${(1 - open) * 16}px)`, opacity: Math.max(0, (open - 0.35) / 0.65), transition: drag.current ? "none" : "opacity .4s ease, transform .5s ease", boxShadow: "0 12px 20px -14px rgba(58,51,44,.45), 0 1px 0 rgba(58,51,44,.06)" }}
               >
                 <div className="absolute left-1/2 -top-[7px] w-[58px] h-[16px] -translate-x-1/2" style={{ background: "rgba(221,170,94,.45)", transform: "rotate(2deg)", clipPath: "polygon(3% 0,97% 4%,100% 100%,0 96%)" }} />
@@ -150,16 +150,16 @@ export function HomeCurtain() {
                   how we got here
                 </Hand>
                 {[
-                  ["in your accounts", "$4,319"],
-                  ["spoken for by Friday", "− $1,763"],
-                  [`cushion · ${c.label}`, `− $${Math.round(c.held)}`],
-                  ["yours today", c.number],
+                  ["in your accounts", "$4,318.90"],
+                  ["bills and goals by Friday", "− $1,763.14"],
+                  [`cushion · ${c.label}`, `− $${c.held.toFixed(2)}`],
+                  ["yours today", c.exact],
                 ].map(([k, v], i) => {
                   const last = i === 3;
                   const tone = i === 2 ? C.oakDeep : C.fern;
                   return (
-                    <div key={k} className="flex items-baseline justify-between gap-[10px] whitespace-nowrap" style={{ marginTop: i ? 3 : 4, paddingTop: last ? 5 : 0, borderTop: last ? `1.5px solid ${C.fern}` : "none" }}>
-                      <span className={last ? "text-[12.5px] font-semibold" : "text-[12px]"} style={{ color: last ? C.fern : C.ink, opacity: last ? 1 : 0.8, transition: "color .4s" }}>
+                    <div key={k} className="flex items-baseline justify-between gap-[12px] whitespace-nowrap" style={{ marginTop: i ? 3 : 4, paddingTop: last ? 5 : 0, borderTop: last ? `1.5px solid ${C.fern}` : "none" }}>
+                      <span className={last ? "text-[13px] font-semibold" : "text-[12px]"} style={{ color: last ? C.fern : C.ink, opacity: last ? 1 : 0.8, transition: "color .4s" }}>
                         {k}
                       </span>
                       <span key={v} className={`av-tnum av-fade ${last ? "text-[16px]" : "text-[14px]"}`} style={{ color: tone }}>
@@ -244,7 +244,7 @@ export function HomeCurtain() {
                     {c.pct} held back
                   </span>
                 </div>
-                <div className="text-[12.5px] mt-[4px]" style={{ color: C.muted }}>
+                <div className="text-[13px] mt-[4px]" style={{ color: C.muted }}>
                   {c.note}
                 </div>
               </div>
@@ -252,7 +252,7 @@ export function HomeCurtain() {
           </div>
 
           <div className="relative px-[30px] mt-[12px] av-rise d5">
-            <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things today"}</Section>
+            <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things"}</Section>
             <Task first title="Move $120 to savings" value="$120" py={11} done={done[0]} onToggle={() => setDone([!done[0], done[1]])} />
             <Task title="Pay the electric bill" value="$142.36" py={11} done={done[1]} onToggle={() => setDone([done[0], !done[1]])} />
           </div>

@@ -88,11 +88,11 @@ function forecast(amount: number, thing: string) {
   const ratio = left / WEEK;
   const what = thing ? `${thing} at $${amount}` : `$${amount}`;
   const What = what[0].toUpperCase() + what.slice(1);
-  if (amount > WEEK) return { line: `Rain by Thursday. ${What} is $${amount - WEEK} more than the week holds. Sunnier after Friday — I can remind you.`, tone: C.clay };
+  if (amount > WEEK) return { line: `Rain by Thursday. Sunnier after Friday, when it fits easily. I can remind you then.`, tone: T.money };
   if (ratio >= 0.75) return { line: `Sunny all week. After ${what} you'd still have $${left} through Friday.`, tone: C.fern };
   if (ratio >= 0.5) return { line: `Fair, with a little cloud on Thursday. ${What} leaves $${left} through Friday — that's fine.`, tone: C.fern };
-  if (ratio >= 0.25) return { line: `Clouds by Thursday. ${What} leaves $${left} for the rest of the week — doable, just quieter days.`, tone: C.oakDeep };
-  return { line: `Grey until payday. ${What} leaves $${left} — it can be done, but Thursday would be tight.`, tone: C.oakDeep };
+  if (ratio >= 0.25) return { line: `Clouds by Thursday. ${What} leaves $${left} for the rest of the week — doable, just quieter days.`, tone: T.hint };
+  return { line: `Grey until payday. ${What} leaves $${left} — it can be done, but Thursday would be tight.`, tone: T.hint };
 }
 
 /** One day's sky. Every layer is always drawn; the state only changes opacity and position, so weather drifts in rather than switching. */
@@ -156,26 +156,28 @@ export function HomeForecast() {
       <StatusBar />
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
         {/* Forecast reads like a morning almanac: a masthead, a double rule, the week in columns */}
-        <div className="px-[26px] pt-[14px] av-fade d1">
-          <div className="pb-[10px]">
+        <div className="px-[26px] pt-[16px] av-fade d1">
+          <div className="pb-[12px]">
             <Wordmark size={21} />
           </div>
           <div style={{ height: 2, background: "rgba(58,51,44,.55)" }} />
           <div className="mt-[2px]" style={{ height: 1, background: "rgba(58,51,44,.25)" }} />
         </div>
 
-        <div className="px-[26px] mt-[22px] av-rise d2">
+        <div className="px-[26px] mt-[24px] av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
           <div key={asking ? thing || "n" : "idle"} className="av-fade">
             <Hero tone={tone} className="mt-[16px]">
-              ${asking ? left : 94}
+              {over ? `$${amount - WEEK} short` : `$${asking ? left : 94}`}
             </Hero>
-            <Support className="mt-[9px]">{asking ? `would be left for the week, after ${thing || "that"}.` : "is yours today, and $243 through Friday."}</Support>
+            <Support className="mt-[8px]">
+              {over ? "That's more than this week holds." : asking ? `would be left for the week, after ${thing || "that"}.` : "is yours today, and $243 through Friday."}
+            </Support>
           </div>
         </div>
 
         {/* ---------- the week, under a sky ---------- */}
-        <div className="mt-[10px] av-pop d3">
+        <div className="mt-[12px] av-pop d3">
           <svg viewBox="0 0 390 172" width="100%" style={{ display: "block" }}>
             {/* the sky: one loose wash, warm when the week is easy, grey when it isn't */}
             <rect x="6" y="16" width="378" height="104" rx="30" fill={grey ? "#DCDFDA" : "#F6E0C6"} opacity=".75" className="av-wc" style={{ transition: "fill 1.2s ease" }} />
@@ -192,7 +194,7 @@ export function HomeForecast() {
                 <text x={X[i]} y="149" textAnchor="middle" fontFamily="'DM Sans', sans-serif" fontSize="12" fontWeight={i === 0 || i === 4 ? 500 : 400} fill={i === 4 ? T.money : i === 0 ? C.fern : T.section}>
                   {i === 4 ? "payday" : i === 0 ? "today" : d}
                 </text>
-                <text x={X[i]} y="165" textAnchor="middle" fontFamily="Newsreader, Georgia, serif" fontStyle="italic" fontSize="12" fill={skies[i] === "rain" ? C.clay : skies[i] === "cloud" ? C.oakDeep : C.sage} style={{ opacity: asking ? 1 : 0, transition: "opacity .6s ease" }}>
+                <text x={X[i]} y="165" textAnchor="middle" fontFamily="Newsreader, Georgia, serif" fontStyle="italic" fontSize="12" fill={skies[i] === "rain" ? T.money : skies[i] === "cloud" ? T.hint : C.fern} style={{ opacity: asking ? 1 : 0, transition: "opacity .6s ease" }}>
                   {skies[i] === "sun" ? "clear" : skies[i] === "partly" ? "fair" : skies[i] === "cloud" ? "cloudy" : "rain"}
                 </text>
               </g>
@@ -200,17 +202,17 @@ export function HomeForecast() {
           </svg>
         </div>
 
-        <div className="mt-[14px]">
+        <div className="mt-[16px]">
           {/* a single rule closes the almanac's weather column */}
           <div className="mx-[26px]" style={{ height: 1, background: "rgba(58,51,44,.25)" }} />
           {/* ---------- can I afford it? a shelf of everyday things ---------- */}
-          <div className="px-[26px] pt-[16px] pb-[6px] av-rise d5">
+          <div className="px-[26px] pt-[16px] pb-[8px] av-rise d5">
             <div className="av-serif" style={{ fontSize: 20, color: T.ink, lineHeight: 1.3 }}>
               Thinking of something?
             </div>
 
             {/* the shelf */}
-            <div className="relative mt-[14px]">
+            <div className="relative mt-[16px]">
               <div className="grid grid-cols-4">
                 {TRIES.map(([name], n) => {
                   const on = item === n;
@@ -235,7 +237,7 @@ export function HomeForecast() {
               <div className="absolute left-[0px] right-[0px] h-[5px] rounded-full" style={{ top: 55, background: "linear-gradient(180deg,#D9BF98,#C2A276)", boxShadow: "0 4px 6px -4px rgba(92,66,36,.4)" }} />
             </div>
 
-            <div className="mt-[14px] text-[12.5px]" style={{ color: C.muted, opacity: fc ? 0 : 1, maxHeight: fc ? 0 : 20, overflow: "hidden", transition: "opacity .3s, max-height .4s" }}>
+            <div className="mt-[16px] text-[13px]" style={{ color: C.muted, opacity: fc ? 0 : 1, maxHeight: fc ? 0 : 20, overflow: "hidden", transition: "opacity .3s, max-height .4s" }}>
               Tap one to see how the week's weather changes.
             </div>
 

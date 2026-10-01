@@ -441,7 +441,7 @@ export function MeadowBand({ h = 72, opacity = 1 }: { h?: number; opacity?: numb
 /** A whisper: the small quiet line that introduces a thing. Sentence case, sans, never capitals. */
 export function Whisper({ children, tone = C.muted }: { children: React.ReactNode; tone?: string }) {
   return (
-    <div className="text-[12.5px]" style={{ color: tone, lineHeight: 1.35, letterSpacing: ".005em" }}>
+    <div className="text-[13px]" style={{ color: tone, lineHeight: 1.35, letterSpacing: ".005em" }}>
       {children}
     </div>
   );
@@ -648,7 +648,7 @@ export function Task({
         )}
       </div>
       {value && (
-        <div className="av-tnum text-[15.5px] shrink-0" style={{ color: T.amount, opacity: done ? 0.4 : 1, transition: "opacity .4s" }}>
+        <div className="av-tnum text-[16px] shrink-0" style={{ color: T.amount, opacity: done ? 0.4 : 1, transition: "opacity .4s" }}>
           {value}
         </div>
       )}

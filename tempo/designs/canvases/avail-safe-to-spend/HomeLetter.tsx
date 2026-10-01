@@ -42,17 +42,20 @@ export function HomeLetter() {
   const shown = H ? (open ? half * 2 : half) : "auto";
   const FOLD = ".9s cubic-bezier(.5,.05,.2,1)";
 
-  const noteBody = (
+  // the note is drawn twice (one copy per half of the fold); each copy only exposes the controls it actually shows
+  const noteBody = (owner: "top" | "bottom") => (
     <>
-          <div className="relative px-[30px] pt-[26px] pb-[14px]">
+          <div className="relative px-[30px] pt-[24px] pb-[16px]" aria-hidden={owner !== "top"}>
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
               Good morning, Todd.
             </div>
             <div
-              className="av-count av-tnum inline-block mt-[18px]"
+              className="av-count av-tnum inline-block mt-[20px]"
               style={{ fontSize: 60, lineHeight: 1, color: C.fern, letterSpacing: "-0.04em", borderBottom: `1.5px dotted ${how ? C.sage : "rgba(111,143,114,.45)"}`, paddingBottom: 2, transition: "border-color .3s" }}
               onClick={stop(() => setHow((h) => !h))}
               title="tap to see how"
+              tabIndex={owner === "top" ? 0 : -1}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), e.stopPropagation(), setHow((h) => !h))}
               role="button"
               aria-expanded={how}
               aria-label="$2,487.36 to spend today. Show how it was worked out."
@@ -71,7 +74,7 @@ export function HomeLetter() {
                   ["cushion and goals", "− $147.34"],
                 ].map(([k, v]) => (
                   <div key={k} className="flex items-baseline justify-between py-[3px]">
-                    <span className="text-[12.5px]" style={{ color: C.muted }}>
+                    <span className="text-[13px]" style={{ color: C.muted }}>
                       {k}
                     </span>
                     <span className="av-tnum text-[14px]" style={{ color: C.fern }}>
@@ -82,21 +85,21 @@ export function HomeLetter() {
               </div>
             </div>
           </div>
-          <div className="relative">
-            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ borderTop: "1px dashed rgba(58,51,44,.12)" }}>
+          <div className="relative" aria-hidden={owner !== "bottom"}>
+            <div className="px-[30px] pt-[16px] pb-[24px]" style={{ borderTop: "1px dashed rgba(58,51,44,.12)" }}>
               <Section>{allDone ? "Both done." : "Two small things"}</Section>
               {[
                 ["Move $120 to savings", ""],
                 ["Pay the electric bill", "$142.36"],
               ].map(([t, v], i) => (
-                <div key={t} className="flex items-center gap-[12px] mt-[12px] av-press" onClick={stop(() => setDone((d) => (i === 0 ? [!d[0], d[1]] : [d[0], !d[1]])))}>
+                <div key={t} role="checkbox" aria-checked={done[i]} aria-label={v ? `${t}, ${v}` : t} tabIndex={owner === "bottom" ? 0 : -1} className="flex items-center gap-[12px] mt-[12px] min-h-[32px] av-press" onClick={stop(() => setDone((d) => (i === 0 ? [!d[0], d[1]] : [d[0], !d[1]])))} onKeyDown={(e) => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); e.stopPropagation(); setDone((d) => (i === 0 ? [!d[0], d[1]] : [d[0], !d[1]])); } }}>
                   <Tick done={done[i]} />
                   <div className="relative inline-block flex-1 text-[15px] font-medium" style={{ color: done[i] ? C.muted : C.ink, lineHeight: 1.3, transition: "color .4s" }}>
                     {t}
                     <span className="absolute left-0 top-[52%] h-[1.5px] rounded-full" style={{ width: done[i] ? "100%" : "0%", background: C.oakDeep, transition: "width .45s cubic-bezier(.2,.8,.2,1)" }} />
                   </div>
                   {v && (
-                    <span className="av-tnum text-[15.5px]" style={{ color: T.amount, opacity: done[i] ? 0.4 : 1, transition: "opacity .4s" }}>
+                    <span className="av-tnum text-[16px]" style={{ color: T.amount, opacity: done[i] ? 0.4 : 1, transition: "opacity .4s" }}>
                       {v}
                     </span>
                   )}
@@ -104,18 +107,18 @@ export function HomeLetter() {
               ))}
 
               {/* the P.S. is in Avail's own hand */}
-              <div className="mt-[18px]" style={{ transform: "rotate(-.6deg)" }}>
+              <div className="mt-[20px]" style={{ transform: "rotate(-.6deg)" }}>
                 <div key={String(corrected)} className="av-hand av-fade" style={{ fontSize: 21, color: "#5A6B5C", lineHeight: 1.05 }}>
                   <span style={{ color: T.money }}>P.S. </span>
                   {corrected ? "Put it back. I'll ask you first next time. " : "Electric ran high last night, so I trimmed your day to $87 till Friday. "}
-                  <span role="button" aria-label={corrected ? "Undo" : "Not quite? Put the electric bill back."} tabIndex={0} className="av-press relative cursor-pointer" style={{ color: corrected ? C.muted : T.hint, textDecoration: "underline", textDecorationColor: "rgba(126,95,60,.55)", textUnderlineOffset: 3, whiteSpace: "nowrap" }} onClick={stop(() => setCorrected((c) => !c))}>
+                  <span role="button" aria-label={corrected ? "Undo" : "Not quite? Put the electric bill back."} tabIndex={owner === "bottom" ? 0 : -1} onKeyDown={(e) => { if (e.key === "Enter") { e.stopPropagation(); setCorrected((c) => !c); } }} className="av-press relative cursor-pointer" style={{ color: corrected ? C.muted : T.hint, textDecoration: "underline", textDecorationColor: "rgba(126,95,60,.55)", textUnderlineOffset: 3, whiteSpace: "nowrap" }} onClick={stop(() => setCorrected((c) => !c))}>
                     <span className="absolute -inset-x-[6px] -inset-y-[12px]" aria-hidden />
                     {corrected ? "undo" : "not quite?"}
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-end justify-end gap-[6px] mt-[10px]">
+              <div className="flex items-end justify-end gap-[8px] mt-[12px]">
                 <span key={String(allDone)} className="av-hand av-fade" style={{ fontSize: 26, color: C.fern, transform: "rotate(-3deg)", display: "inline-block" }}>
                   {allDone ? "go enjoy the day ~ avail" : "~ avail"}
                 </span>
@@ -166,13 +169,26 @@ export function HomeLetter() {
         <div className="w-full av-fade d1">
           <HomeHeader />
         </div>
-        <div className="relative av-rise d2 mt-[22px]" style={{ width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
+        <div className="relative av-rise d2 mt-[24px]" style={{ width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
+          {/* keyboard and screen-reader control for the fold; appears when focused */}
+          <button
+            type="button"
+            aria-expanded={open}
+            className="sr-only focus:not-sr-only focus:absolute focus:-top-[30px] focus:right-0 focus:z-30 focus:px-[10px] focus:py-[4px] focus:rounded-full focus:text-[12px]"
+            style={{ background: C.paper, color: C.fern }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen((o) => !o);
+            }}
+          >
+            {open ? "Fold the note" : "Open the note for Todd"}
+          </button> setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
           {/* the paper's shadow follows its folded height */}
           <div className="absolute inset-x-0 top-0 pointer-events-none" style={{ height: shown, boxShadow: paperShadow, borderRadius: 3, transition: `height ${FOLD}` }} />
           <div className="relative" style={{ height: H ? shown : "auto", perspective: 1800, transition: `height ${FOLD}` }}>
             {/* the top half stays on the desk */}
             <div className="relative overflow-hidden" style={{ height: H ? half : "auto", background: paper, borderRadius: H ? "3px 3px 0 0" : 3 }}>
-              <div ref={measureRef}>{noteBody}</div>
+              <div ref={measureRef}>{noteBody("top")}</div>
               {/* the lower half's shadow falls across it as it folds over */}
               <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(0deg, rgba(92,66,36,.2), rgba(92,66,36,0) 75%)", opacity: open ? 0 : 1, transition: `opacity ${FOLD}` }} />
             </div>
@@ -181,8 +197,8 @@ export function HomeLetter() {
             {H > 0 && (
               <div className="absolute inset-x-0" style={{ top: half, height: half, transformOrigin: "top center", transformStyle: "preserve-3d", transform: `rotateX(${open ? 0 : 180}deg)`, transition: `transform ${FOLD}` }}>
                 {/* front: the rest of the letter */}
-                <div className="absolute inset-0 overflow-hidden" aria-hidden style={{ background: paper, borderRadius: "0 0 3px 3px", backfaceVisibility: "hidden" }}>
-                  <div style={{ transform: `translateY(${-half}px)` }}>{noteBody}</div>
+                <div className="absolute inset-0 overflow-hidden" aria-hidden={!open} style={{ background: paper, borderRadius: "0 0 3px 3px", backfaceVisibility: "hidden" }}>
+                  <div style={{ transform: `translateY(${-half}px)` }}>{noteBody("bottom")}</div>
                   {/* it darkens as it turns away from the light */}
                   <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(92,66,36,.24), rgba(92,66,36,.08))", opacity: open ? 0 : 1, transition: `opacity ${FOLD}` }} />
                 </div>
@@ -204,7 +220,7 @@ export function HomeLetter() {
         </div>
 
         {/* a letter comes every morning; the earlier ones collect here, folded */}
-        <div className="mt-[26px] av-rise d5" style={{ width: 318 }}>
+        <div className="mt-[24px] av-rise d5" style={{ width: 318 }}>
           <Section className="px-[2px]">Earlier letters</Section>
           {[
             { day: "Wednesday", n: "$91", note: "you moved $80 to savings", tilt: 0.8 },

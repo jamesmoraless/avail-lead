@@ -98,7 +98,7 @@ export function HomePath() {
             <Hero tone={friday ? T.money : C.fern} className="mt-[16px]">
               {day.n}
             </Hero>
-            <Support className="mt-[9px]">{day.s}</Support>
+            <Support className="mt-[8px]">{day.s}</Support>
           </div>
         </div>
 
@@ -194,8 +194,8 @@ export function HomePath() {
             { k: 3, title: "Internet", amt: "$79" },
             { k: 4, title: "Paycheck", amt: "+$3,420" },
           ].map((r, n) => (
-            <div key={r.title} className="av-row flex items-center gap-[12px] py-[10px] px-[4px] cursor-pointer" style={{ borderTop: n ? `1px solid ${C.line}` : "none", marginTop: n ? 0 : 2 }} onClick={() => goTo(r.k)}>
-              <span className="w-[34px] shrink-0 text-[12.5px]" style={{ color: r.k === i ? P.pine : C.muted, fontWeight: r.k === i ? 600 : 400 }}>
+            <div key={r.title} className="av-row flex items-center gap-[12px] py-[12px] px-[4px] cursor-pointer" style={{ borderTop: n ? `1px solid ${C.line}` : "none", marginTop: n ? 0 : 2 }} onClick={() => goTo(r.k)}>
+              <span className="w-[34px] shrink-0 text-[13px]" style={{ color: r.k === i ? P.pine : C.muted, fontWeight: r.k === i ? 600 : 400 }}>
                 {BASE[r.k].d.slice(0, 3)}
               </span>
               <span className="flex-1 text-[15px] font-medium" style={{ color: T.ink }}>
@@ -207,7 +207,7 @@ export function HomePath() {
                   tabIndex={0}
                   aria-pressed={carried}
                   aria-label={carried ? "Undo, pay electric on Wednesday" : "Move the electric bill to Friday's paycheck"}
-                  className="av-press relative text-[12.5px] rounded-full px-[11px] py-[5px] shrink-0"
+                  className="av-press relative text-[13px] rounded-full px-[11px] py-[5px] shrink-0"
                   style={{ color: carried ? C.muted : C.fern, fontWeight: 500, boxShadow: `inset 0 0 0 1px ${carried ? "rgba(58,51,44,.16)" : "rgba(111,143,114,.55)"}`, background: carried ? "transparent" : "rgba(111,143,114,.08)" }}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -218,7 +218,7 @@ export function HomePath() {
                   {carried ? "undo" : "move to Friday"}
                 </span>
               )}
-              <span className="av-tnum text-[15.5px] shrink-0 w-[70px] text-right" style={{ color: r.title === "Paycheck" ? T.money : T.amount }}>
+              <span className="av-tnum text-[16px] shrink-0 w-[70px] text-right" style={{ color: r.title === "Paycheck" ? T.money : T.amount }}>
                 {r.amt}
               </span>
             </div>
