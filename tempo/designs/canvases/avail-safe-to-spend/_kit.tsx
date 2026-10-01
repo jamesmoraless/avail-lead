@@ -459,15 +459,14 @@ export const T = {
   amount: "#5E574F",
 };
 
-/** A raised paper sheet the lower half of a home screen sits on: rounded top, soft shadow, a small grab handle.
- *  It gives each screen two layers — the scene above, the day's things below — without adding lines. */
+/** A resting paper card for the day's things: inset from both edges, all corners rounded, ending with its content.
+ *  It gives the screen a second layer without looking like a draggable bottom sheet (no handle, no full-bleed, no run-off). */
 export function Sheet({ children, className = "", style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
     <div
-      className={`relative rounded-t-[28px] pt-[9px] ${className}`}
-      style={{ background: "linear-gradient(180deg,#FDFBF7 0%,#F9F5EE 100%)", boxShadow: "0 -16px 32px -24px rgba(58,51,44,.38), 0 -1px 0 rgba(58,51,44,.07), inset 0 1px 0 rgba(255,255,255,.9)", minHeight: 560, ...style }}
+      className={`relative mx-[14px] rounded-[22px] pt-[6px] pb-[8px] ${className}`}
+      style={{ background: "rgba(253,251,247,.88)", boxShadow: "0 14px 30px -22px rgba(58,51,44,.35), 0 1px 2px rgba(58,51,44,.05), inset 0 0 0 1px rgba(58,51,44,.05)", ...style }}
     >
-      <div className="mx-auto w-[36px] h-[4px] rounded-full" style={{ background: "rgba(58,51,44,.13)" }} />
       {children}
     </div>
   );

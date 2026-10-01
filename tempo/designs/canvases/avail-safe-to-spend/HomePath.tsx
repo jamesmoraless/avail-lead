@@ -180,8 +180,8 @@ export function HomePath() {
         </div>
 
         {/* ---------- this week, on the paper below the grass ---------- */}
-        <Sheet className="av-rise d5" style={{ marginTop: -26 }}>
-          <div className="px-[26px] pt-[8px] pb-[20px]">
+        <Sheet className="av-rise d5" style={{ marginTop: -14 }}>
+          <div className="px-[16px] pt-[10px] pb-[4px]">
           <Section>This week</Section>
           {[
             { k: electricDay, title: "Electric", amt: "$209" },
