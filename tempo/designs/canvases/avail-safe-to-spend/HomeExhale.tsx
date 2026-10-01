@@ -120,7 +120,7 @@ export function HomeExhale() {
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
         {/* Exhale is symmetrical, like a breath: everything sits on one centre line */}
         <div className="pt-[16px] flex justify-center av-fade d1">
-          <Wordmark size={21} />
+          <Wordmark size={26} />
         </div>
 
         <div className="px-[26px] mt-[26px] text-center av-rise d2">
