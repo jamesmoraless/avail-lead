@@ -67,6 +67,11 @@ export function HomeExhale() {
 
   // one guided breath on arrival, so the number is there when you look
   useEffect(() => {
+    // with "reduce motion" on, skip the guided breath and show the number straight away
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setPhase("done");
+      return;
+    }
     const a = window.setTimeout(() => setPhase("in"), 150);
     const b = window.setTimeout(() => setPhase("out"), 4000);
     const c = window.setTimeout(() => setPhase("done"), 7200);
@@ -131,6 +136,10 @@ export function HomeExhale() {
         <div
           className="relative mx-auto mt-[14px] flex items-center justify-center"
           style={{ width: 300, height: 256, cursor: "pointer", touchAction: "none", perspective: 900 }}
+          role="button"
+          tabIndex={0}
+          aria-label={flipped ? "How today's number was worked out. Tap to turn back." : "$2,487 is yours today. Press and hold to breathe, or tap to see how it was worked out."}
+          onKeyDown={(e) => e.key === "Enter" && phase === "done" && setFlipped((f) => !f)}
           onPointerDown={down}
           onPointerUp={up}
           onPointerCancel={up}
@@ -177,7 +186,7 @@ export function HomeExhale() {
               className="absolute inset-0 rounded-full flex flex-col items-center justify-center px-[26px]"
               style={{ background: "#FFFCF6", boxShadow: "0 22px 40px -30px rgba(58,51,44,.5), inset 0 0 0 1px rgba(58,51,44,.06)", backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
             >
-              <Hand size={19} tone={C.oakDeep}>
+              <Hand size={19} tone={T.hint}>
                 how we got here
               </Hand>
               {[
@@ -186,7 +195,7 @@ export function HomeExhale() {
                 ["cushion and goals", "− $147"],
               ].map(([k, v], i) => (
                 <div key={k} className="w-full flex items-baseline justify-between gap-[8px] whitespace-nowrap" style={{ marginTop: i ? 4 : 8, paddingTop: i ? 4 : 0, borderTop: i ? `1px solid ${C.line}` : "none" }}>
-                  <span className="text-[10.5px]" style={{ color: C.muted }}>
+                  <span className="text-[12px]" style={{ color: C.muted }}>
                     {k}
                   </span>
                   <span className="av-serif av-tnum text-[13px]" style={{ color: C.fern }}>
@@ -195,7 +204,7 @@ export function HomeExhale() {
                 </div>
               ))}
               <div className="w-full flex items-baseline justify-between mt-[4px] pt-[4px]" style={{ borderTop: `1px solid ${C.oak}` }}>
-                <span className="text-[10.5px]" style={{ color: C.fern }}>
+                <span className="text-[12px]" style={{ color: C.fern }}>
                   yours
                 </span>
                 <span className="av-serif av-tnum text-[14px]" style={{ color: C.fern }}>
@@ -208,7 +217,7 @@ export function HomeExhale() {
 
         <div className="text-center px-[40px]" style={{ minHeight: 24 }}>
           <div key={caption} className="av-fade">
-            <Hand size={22} tone={C.oakDeep}>
+            <Hand size={22} tone={T.hint}>
               {caption}
             </Hand>
           </div>
@@ -244,6 +253,8 @@ export function HomeExhale() {
                     key={w}
                     className="av-press relative flex flex-col items-center gap-[6px] rounded-[18px] py-[10px] cursor-pointer"
                     style={{ background: "rgba(253,251,246,.75)", boxShadow: on ? "none" : "inset 0 0 0 1px rgba(58,51,44,.08)", opacity: dim ? 0.6 : 1, transition: "box-shadow .4s ease, opacity .4s ease" }}
+                    aria-pressed={on}
+                    aria-label={`Money feels ${w}`}
                     onClick={() => setMood(on ? null : w)}
                   >
                     {/* chosen: a wash of colour soaks into the tile */}

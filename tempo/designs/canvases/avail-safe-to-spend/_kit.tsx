@@ -31,7 +31,7 @@ export const P = {
 };
 
 /** A line written by hand: notes, nudges, the sign-off. Never numbers. */
-export function Hand({ children, size = 20, tone = "#8A6A45", rotate = 0, className = "" }: { children: React.ReactNode; size?: number; tone?: string; rotate?: number; className?: string }) {
+export function Hand({ children, size = 20, tone = "#7E5F3C", rotate = 0, className = "" }: { children: React.ReactNode; size?: number; tone?: string; rotate?: number; className?: string }) {
   return (
     <span className={`av-hand ${className}`} style={{ fontSize: size, color: tone, display: "inline-block", transform: rotate ? `rotate(${rotate}deg)` : undefined }}>
       {children}
@@ -50,7 +50,7 @@ export const C = {
   oakDeep: "#A8875C",
   clay: "#BE7D5E",
   ink: "#3A332C",
-  muted: "#8B837A",
+  muted: "#6B645B",
   line: "rgba(58,51,44,.10)",
   // aliases
   linen: "#F7F2EA",
@@ -128,6 +128,12 @@ export function AvailStyles() {
 .av-cta { transition: transform .26s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease; }
 .av-cta:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -16px rgba(52,82,63,.45); }
 .av-cta:active { transform: translateY(0) scale(.99); }
+/* keyboard focus is always visible */
+.av [tabindex]:focus-visible, .av button:focus-visible { outline: 2px solid #34523F; outline-offset: 3px; border-radius: 8px; }
+/* respect "reduce motion": everything lands in its final state, nothing loops */
+@media (prefers-reduced-motion: reduce) {
+  .av *, .av *::before, .av *::after { animation-duration: .001ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
 `}</style>
   );
 }
@@ -360,20 +366,21 @@ export function TabBar({ active = "today", onWood = false }: { active?: string; 
     { k: "plan", d: ICON_PLAN },
     { k: "you", d: ICON_YOU },
   ];
-  const off = onWood ? "rgba(58,51,44,.42)" : "#BFB8AC";
+  const off = onWood ? "rgba(58,51,44,.72)" : "#706960";
   return (
     <div
+      role="tablist"
       className="absolute bottom-0 left-0 right-0 z-40 pt-[14px] pb-[24px] px-[38px] flex items-start justify-between"
       style={{ background: onWood ? "linear-gradient(180deg, rgba(185,152,98,0) 0%, rgba(185,152,98,.55) 40%)" : "linear-gradient(180deg, rgba(247,242,234,0) 0%, rgba(247,242,234,.96) 30%)" }}
     >
       {items.map((it) => {
         const on = active === it.k;
         return (
-          <div key={it.k} className="w-[60px] flex flex-col items-center gap-[6px] av-press">
+          <div key={it.k} role="tab" aria-selected={on} aria-label={it.k} tabIndex={0} className="w-[60px] min-h-[48px] flex flex-col items-center gap-[6px] av-press cursor-pointer">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on ? C.fern : off} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d={it.d} />
             </svg>
-            <span className="text-[11.5px] font-medium" style={{ color: on ? C.fern : off }}>
+            <span className="text-[12px] font-medium" style={{ color: on ? C.fern : off }}>
               {it.k}
             </span>
             <div className="w-[4px] h-[4px] rounded-full" style={{ background: on ? C.clay : "transparent" }} />
@@ -454,8 +461,11 @@ export const Eyebrow = Whisper;
  * ------------------------------------------------------------------------ */
 export const T = {
   ink: "#3A332C",
-  support: "#7A7168",
-  section: "rgba(58,51,44,.5)",
+  support: "#675F56",
+  section: "#6B645B",
+  /** text-only accents, darkened so they read at 4.5:1 on cream */
+  hint: "#7E5F3C",
+  money: "#9C4E2E",
   amount: "#5E574F",
 };
 
@@ -616,9 +626,14 @@ export function Task({
   const toggle = () => (onToggle ? onToggle() : setInner((d) => !d));
   return (
     <div
+      role="checkbox"
+      aria-checked={done}
+      aria-label={value ? `${title}, ${value}` : title}
+      tabIndex={0}
       className="av-row flex items-center gap-[14px] px-[4px] cursor-pointer select-none"
-      style={{ paddingTop: py, paddingBottom: py, borderTop: first ? "none" : `1px solid ${C.line}` }}
+      style={{ paddingTop: py, paddingBottom: py, minHeight: 44, borderTop: first ? "none" : `1px solid ${C.line}` }}
       onClick={toggle}
+      onKeyDown={(e) => (e.key === " " || e.key === "Enter") && (e.preventDefault(), toggle())}
     >
       <Tick done={done} />
       <div className="flex-1 min-w-0">

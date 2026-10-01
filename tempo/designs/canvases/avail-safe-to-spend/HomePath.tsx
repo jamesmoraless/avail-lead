@@ -95,7 +95,7 @@ export function HomePath() {
         <div className="px-[26px] mt-[28px] av-rise d2" style={{ minHeight: 146 }}>
           <Greeting>Good morning, Todd.</Greeting>
           <div key={day.d + String(carried)} className="av-fade">
-            <Hero tone={friday ? P.terracotta : C.fern} className="mt-[16px]">
+            <Hero tone={friday ? T.money : C.fern} className="mt-[16px]">
               {day.n}
             </Hero>
             <Support className="mt-[9px]">{day.s}</Support>
@@ -103,7 +103,7 @@ export function HomePath() {
         </div>
 
         {/* ---------- the week, painted as a sunrise ---------- */}
-        <div ref={sceneRef} className="relative av-pop d3" style={{ height: H, cursor: "ew-resize", touchAction: "none" }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
+        <div ref={sceneRef} role="slider" tabIndex={0} aria-label="Day of the week" aria-valuemin={0} aria-valuemax={4} aria-valuenow={i} aria-valuetext={`${day.d}: ${day.n}`} onKeyDown={(e) => { if (e.key === "ArrowRight") goTo(Math.min(4, i + 1)); if (e.key === "ArrowLeft") goTo(Math.max(0, i - 1)); }} className="relative av-pop d3" style={{ height: H, cursor: "ew-resize", touchAction: "none" }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
           {/* the sky lives only in the panorama: it rises out of the paper and warms toward Friday */}
           <div className="absolute inset-x-0 pointer-events-none" style={{ top: 0, height: HORIZON + 10, background: "linear-gradient(180deg, rgba(228,233,226,0) 0%, rgba(228,233,226,.85) 30%, #EEE7DA 70%, #F3DCC3 100%)" }} />
           <div className="absolute inset-x-0 pointer-events-none" style={{ top: 0, height: HORIZON + 10, background: "linear-gradient(180deg, rgba(247,242,234,0) 10%, #F4D3B2 100%)", opacity: 0.1 + t * 0.7, transition: ease }} />
@@ -162,17 +162,17 @@ export function HomePath() {
 
             {/* a mark and a name for each day, sitting in the grass */}
             {XS.map((x, k) => (
-              <g key={k} style={{ cursor: "pointer" }} onClick={() => goTo(k)} onPointerDown={(e) => e.stopPropagation()}>
+              <g key={k} role="button" aria-label={`Show ${days[k].d}`} style={{ cursor: "pointer" }} onClick={() => goTo(k)} onPointerDown={(e) => e.stopPropagation()}>
                 <rect x={x - 30} y={HORIZON - 6} width="60" height="46" fill="transparent" />
                 <circle cx={x} cy={HORIZON + 4} r={k === i ? 5.5 : 3} fill={k === i ? C.paper : "rgba(253,251,246,.75)"} stroke={k === i ? C.fern : "none"} strokeWidth="1.6" style={{ transition: "all .3s" }} />
-                <text x={x} y={HORIZON + 26} textAnchor="middle" fontFamily="'DM Sans', sans-serif" fontSize="12" fontWeight={k === i ? 600 : 400} fill={k === i ? P.pine : "rgba(46,70,55,.62)"} style={{ transition: "fill .3s" }}>
+                <text x={x} y={HORIZON + 26} textAnchor="middle" fontFamily="'DM Sans', sans-serif" fontSize="12" fontWeight={k === i ? 600 : 400} fill={k === i ? P.pine : "rgba(46,70,55,.86)"} style={{ transition: "fill .3s" }}>
                   {k === 0 ? "today" : days[k].d.slice(0, 3)}
                 </text>
               </g>
             ))}
           </svg>
           <div className="absolute right-[30px] top-[4px] flex items-center gap-[4px]" style={{ opacity: touched ? 0 : 1, transition: "opacity .4s" }}>
-            <Hand size={20} tone={C.oakDeep} rotate={-3}>
+            <Hand size={20} tone={T.hint} rotate={-3}>
               drag the sun along
             </Hand>
             <svg width="26" height="18" viewBox="0 0 26 18" style={{ transform: "translateY(10px)" }}>
@@ -203,17 +203,22 @@ export function HomePath() {
               </span>
               {r.title === "Electric" && (
                 <span
-                  className="av-press text-[12.5px] rounded-full px-[11px] py-[5px] shrink-0"
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={carried}
+                  aria-label={carried ? "Undo, pay electric on Wednesday" : "Move the electric bill to Friday's paycheck"}
+                  className="av-press relative text-[12.5px] rounded-full px-[11px] py-[5px] shrink-0"
                   style={{ color: carried ? C.muted : C.fern, fontWeight: 500, boxShadow: `inset 0 0 0 1px ${carried ? "rgba(58,51,44,.16)" : "rgba(111,143,114,.55)"}`, background: carried ? "transparent" : "rgba(111,143,114,.08)" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     setCarried((v) => !v);
                   }}
                 >
+                  <span className="absolute -inset-y-[10px] -inset-x-[4px]" aria-hidden />
                   {carried ? "undo" : "move to Friday"}
                 </span>
               )}
-              <span className="av-tnum text-[15.5px] shrink-0 w-[70px] text-right" style={{ color: r.title === "Paycheck" ? P.terracotta : T.amount }}>
+              <span className="av-tnum text-[15.5px] shrink-0 w-[70px] text-right" style={{ color: r.title === "Paycheck" ? T.money : T.amount }}>
                 {r.amt}
               </span>
             </div>

@@ -65,7 +65,7 @@ export function HomeLetter() {
         <div className="w-full av-fade d1">
           <HomeHeader />
         </div>
-        <div className="relative av-rise d2 mt-[22px]" style={{ perspective: 1400, width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
+        <div className="relative av-rise d2 mt-[22px]" style={{ perspective: 1400, width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
           {/* top half */}
           <div className="relative px-[30px] pt-[26px] pb-[14px]" style={{ background: paper, borderRadius: "3px 3px 0 0", boxShadow: paperShadow }}>
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
@@ -76,6 +76,9 @@ export function HomeLetter() {
               style={{ fontSize: 60, lineHeight: 1, color: C.fern, letterSpacing: "-0.04em", borderBottom: `1.5px dotted ${how ? C.sage : "rgba(111,143,114,.45)"}`, paddingBottom: 2, transition: "border-color .3s" }}
               onClick={stop(() => setHow((h) => !h))}
               title="tap to see how"
+              role="button"
+              aria-expanded={how}
+              aria-label="$2,487.36 to spend today. Show how it was worked out."
             >
               $2,487<span style={{ fontSize: 26, opacity: 0.55 }}>.36</span>
             </div>
@@ -128,9 +131,10 @@ export function HomeLetter() {
               {/* the P.S. is in Avail's own hand */}
               <div className="mt-[18px]" style={{ transform: "rotate(-.6deg)" }}>
                 <div key={String(corrected)} className="av-hand av-fade" style={{ fontSize: 21, color: "#5A6B5C", lineHeight: 1.05 }}>
-                  <span style={{ color: P.terracotta }}>P.S. </span>
+                  <span style={{ color: T.money }}>P.S. </span>
                   {corrected ? "Put it back. I'll ask you first next time. " : "Electric ran high last night, so I trimmed your day to $87 till Friday. "}
-                  <span className="av-press cursor-pointer" style={{ color: corrected ? C.muted : C.oakDeep, textDecoration: "underline", textDecorationColor: "rgba(168,135,92,.5)", textUnderlineOffset: 3, whiteSpace: "nowrap" }} onClick={stop(() => setCorrected((c) => !c))}>
+                  <span role="button" aria-label={corrected ? "Undo" : "Not quite? Put the electric bill back."} tabIndex={0} className="av-press relative cursor-pointer" style={{ color: corrected ? C.muted : T.hint, textDecoration: "underline", textDecorationColor: "rgba(126,95,60,.55)", textUnderlineOffset: 3, whiteSpace: "nowrap" }} onClick={stop(() => setCorrected((c) => !c))}>
+                    <span className="absolute -inset-x-[6px] -inset-y-[12px]" aria-hidden />
                     {corrected ? "undo" : "not quite?"}
                   </span>
                 </div>
@@ -172,7 +176,7 @@ export function HomeLetter() {
                 {l.day}
               </span>
               <span className="flex-1 min-w-0 truncate">
-                <Hand size={18} tone="#6B7A6C">
+                <Hand size={18} tone="#4F6152">
                   {l.note}
                 </Hand>
               </span>

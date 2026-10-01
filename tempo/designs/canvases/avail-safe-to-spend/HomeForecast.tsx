@@ -189,7 +189,7 @@ export function HomeForecast() {
             {DAYS.map((d, i) => (
               <g key={d}>
                 <Day x={X[i]} sky={skies[i]} payday={i === 4} />
-                <text x={X[i]} y="149" textAnchor="middle" fontFamily="'DM Sans', sans-serif" fontSize="12" fontWeight={i === 0 || i === 4 ? 500 : 400} fill={i === 4 ? P.terracotta : i === 0 ? C.fern : "rgba(58,51,44,.5)"}>
+                <text x={X[i]} y="149" textAnchor="middle" fontFamily="'DM Sans', sans-serif" fontSize="12" fontWeight={i === 0 || i === 4 ? 500 : 400} fill={i === 4 ? T.money : i === 0 ? C.fern : T.section}>
                   {i === 4 ? "payday" : i === 0 ? "today" : d}
                 </text>
                 <text x={X[i]} y="165" textAnchor="middle" fontFamily="Newsreader, Georgia, serif" fontStyle="italic" fontSize="12" fill={skies[i] === "rain" ? C.clay : skies[i] === "cloud" ? C.oakDeep : C.sage} style={{ opacity: asking ? 1 : 0, transition: "opacity .6s ease" }}>
@@ -216,7 +216,7 @@ export function HomeForecast() {
                   const on = item === n;
                   const dim = item !== null && !on;
                   return (
-                    <button key={name} className="av-press flex flex-col items-center cursor-pointer" onClick={() => pick(n)} style={{ opacity: dim ? 0.45 : 1, transition: "opacity .4s" }}>
+                    <button key={name} className="av-press flex flex-col items-center cursor-pointer" aria-pressed={on} aria-label={`What if I spent about $${TRIES[n][1]} on ${name}?`} onClick={() => pick(n)} style={{ opacity: dim ? 0.45 : 1, transition: "opacity .4s" }}>
                       <div className="relative" style={{ transform: `translateY(${on ? -8 : 0}px)`, transition: "transform .6s cubic-bezier(.3,1.4,.5,1)" }}>
                         {/* a soft wash behind the one you're weighing */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: 84, height: 84, background: "radial-gradient(circle, rgba(246,224,198,.9) 0%, rgba(246,224,198,0) 70%)", opacity: on ? 1 : 0, transition: "opacity .5s" }} />
@@ -252,8 +252,10 @@ export function HomeForecast() {
                 </div>
                 <div className="flex items-center gap-[8px]">
                   {[-1, 1].map((d) => (
-                    <button key={d} aria-label={d < 0 ? "less" : "more"} className="av-press w-[34px] h-[34px] rounded-full flex items-center justify-center cursor-pointer" style={{ boxShadow: "inset 0 0 0 1px rgba(58,51,44,.16)", background: "rgba(253,251,246,.8)", color: T.ink, fontSize: 18, lineHeight: 1 }} onClick={() => nudge(d as 1 | -1)}>
-                      {d < 0 ? "−" : "+"}
+                    <button key={d} aria-label={d < 0 ? "A little less" : "A little more"} className="av-press w-[44px] h-[44px] flex items-center justify-center cursor-pointer" onClick={() => nudge(d as 1 | -1)}>
+                      <span className="w-[34px] h-[34px] rounded-full flex items-center justify-center" style={{ boxShadow: "inset 0 0 0 1px rgba(58,51,44,.16)", background: "rgba(253,251,246,.8)", color: T.ink, fontSize: 18, lineHeight: 1 }}>
+                        {d < 0 ? "−" : "+"}
+                      </span>
                     </button>
                   ))}
                 </div>

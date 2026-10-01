@@ -117,7 +117,7 @@ export function HomeCurtain() {
               {/* the view, painted */}
               <div className="absolute inset-0" style={{ background: sky, transition: "background 1.4s ease" }} />
               <svg className="absolute inset-0" viewBox={`0 0 ${PANE_W} ${PANE_H}`} width={PANE_W} height={PANE_H} style={{ overflow: "visible" }}>
-                <g style={{ transform: `translateY(${evening ? 70 : 0}px)`, transition: "transform 1.6s cubic-bezier(.3,.8,.3,1)", cursor: "pointer" }} onClick={() => setEvening((v) => !v)}>
+                <g role="button" aria-label={evening ? "Show the morning" : "Show the evening"} style={{ transform: `translateY(${evening ? 70 : 0}px)`, transition: "transform 1.6s cubic-bezier(.3,.8,.3,1)", cursor: "pointer" }} onClick={() => setEvening((v) => !v)}>
                   <circle cx="298" cy="40" r="36" fill={evening ? P.rose : P.dawn} opacity=".45" className="av-wc" style={{ transition: "fill 1.4s" }} />
                   <circle cx="298" cy="40" r="17" fill={evening ? P.apricot : "#F6CF98"} opacity=".95" className="av-wc" style={{ transition: "fill 1.4s" }} />
                 </g>
@@ -146,7 +146,7 @@ export function HomeCurtain() {
                 style={{ left: MIN_W + 14, right: 74, top: 20, background: "#FFFDF8", transform: `rotate(-1.2deg) translateX(${(1 - open) * 16}px)`, opacity: Math.max(0, (open - 0.35) / 0.65), transition: drag.current ? "none" : "opacity .4s ease, transform .5s ease", boxShadow: "0 12px 20px -14px rgba(58,51,44,.45), 0 1px 0 rgba(58,51,44,.06)" }}
               >
                 <div className="absolute left-1/2 -top-[7px] w-[58px] h-[16px] -translate-x-1/2" style={{ background: "rgba(221,170,94,.45)", transform: "rotate(2deg)", clipPath: "polygon(3% 0,97% 4%,100% 100%,0 96%)" }} />
-                <Hand size={19} tone={C.oakDeep}>
+                <Hand size={19} tone={T.hint}>
                   how we got here
                 </Hand>
                 {[
@@ -182,6 +182,11 @@ export function HomeCurtain() {
                   boxShadow: "8px 0 18px -10px rgba(58,51,44,.35)",
                   transition: drag.current ? "none" : "width .6s cubic-bezier(.2,.8,.2,1)",
                 }}
+                role="button"
+                tabIndex={0}
+                aria-expanded={open > 0.5}
+                aria-label={open > 0.5 ? "Draw the curtain" : "Open the curtain to see how today's number was worked out"}
+                onKeyDown={(e) => e.key === "Enter" && setW(w > PANE_W / 2 ? MIN_W : MAX_W)}
                 onPointerDown={down}
                 onPointerMove={move}
                 onPointerUp={up}
@@ -212,7 +217,7 @@ export function HomeCurtain() {
           </svg>
           {/* a pencilled nudge toward the cord */}
           <div className="absolute pointer-events-none flex items-end gap-[2px]" style={{ right: -2, top: -30, opacity: open > 0.5 ? 0 : 1, transition: "opacity .5s" }}>
-            <Hand size={20} tone={C.oakDeep} rotate={-3}>
+            <Hand size={20} tone={T.hint} rotate={-3}>
               pull the cord
             </Hand>
             <svg width="22" height="30" viewBox="0 0 22 30">
