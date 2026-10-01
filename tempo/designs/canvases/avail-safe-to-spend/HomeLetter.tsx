@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Tick, Hand, Section } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Tick, Hand, Section, HomeHeader } from "./_kit";
 
 /* R4 · The Letter.
    A folded note with your name on it, resting on pale linen in morning light,
@@ -60,11 +60,12 @@ export function HomeLetter() {
 
       <StatusBar />
 
-      {/* ---------- the note, centred on the desk ---------- */}
-      <div className="relative z-10 h-full pt-[44px] pb-[88px] flex items-center justify-center">
-        <div className="relative av-rise d2" style={{ perspective: 1400, width: 312, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
-          {/* a second sheet underneath: yesterday's note, left in the stack */}
-          <div className="absolute inset-0 pointer-events-none" style={{ transform: "rotate(3.2deg) translate(10px, 12px)", background: "linear-gradient(180deg,#F7F2E8,#F2ECE0)", borderRadius: 3, boxShadow: "0 18px 30px -24px rgba(92,66,36,.5), 0 1px 2px rgba(92,66,36,.1)" }} />
+      {/* ---------- today's note, then the earlier ones folded beneath it ---------- */}
+      <div className="relative z-10 h-full pt-[44px] pb-[88px] flex flex-col items-center">
+        <div className="w-full av-fade d1">
+          <HomeHeader />
+        </div>
+        <div className="relative av-rise d2 mt-[22px]" style={{ perspective: 1400, width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} onClick={() => setOpen((o) => !o)}>
           {/* top half */}
           <div className="relative px-[30px] pt-[26px] pb-[14px]" style={{ background: paper, borderRadius: "3px 3px 0 0", boxShadow: paperShadow }}>
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
@@ -153,6 +154,33 @@ export function HomeLetter() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* a letter comes every morning; the earlier ones collect here, folded */}
+        <div className="mt-[26px] av-rise d5" style={{ width: 318 }}>
+          <Section className="px-[2px]">Earlier letters</Section>
+          {[
+            { day: "Wednesday", n: "$91", note: "you moved $80 to savings", tilt: 0.8 },
+            { day: "Tuesday", n: "$96", note: "a quiet day, nothing new", tilt: -0.6 },
+          ].map((l, i) => (
+            <div
+              key={l.day}
+              className="av-press flex items-center gap-[12px] px-[16px] py-[11px] cursor-pointer"
+              style={{ marginTop: i ? 8 : 10, background: "linear-gradient(180deg,#FBF8F1,#F6F1E7)", borderRadius: 3, transform: `rotate(${l.tilt}deg)`, boxShadow: "0 10px 18px -16px rgba(92,66,36,.55), 0 1px 2px rgba(92,66,36,.08)" }}
+            >
+              <span className="av-serif italic text-[14px] shrink-0 w-[78px]" style={{ color: C.muted }}>
+                {l.day}
+              </span>
+              <span className="flex-1 min-w-0 truncate">
+                <Hand size={18} tone="#6B7A6C">
+                  {l.note}
+                </Hand>
+              </span>
+              <span className="av-tnum text-[15px] shrink-0" style={{ color: T.amount }}>
+                {l.n}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
       {/* leaf shadows from the plant by the window, swaying slowly */}
