@@ -182,7 +182,7 @@ export function HomeLetter() {
             }}
           >
             {open ? "Fold the note" : "Open the note for Todd"}
-          </button> setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
+          </button>
           {/* the paper's shadow follows its folded height */}
           <div className="absolute inset-x-0 top-0 pointer-events-none" style={{ height: shown, boxShadow: paperShadow, borderRadius: 3, transition: `height ${FOLD}` }} />
           <div className="relative" style={{ height: H ? shown : "auto", perspective: 1800, transition: `height ${FOLD}` }}>
