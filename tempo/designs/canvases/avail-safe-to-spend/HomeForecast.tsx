@@ -157,11 +157,8 @@ export function HomeForecast() {
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
         {/* Forecast reads like a morning almanac: a masthead, a double rule, the week in columns */}
         <div className="px-[26px] pt-[14px] av-fade d1">
-          <div className="flex items-end justify-between pb-[10px]">
+          <div className="pb-[10px]">
             <Wordmark size={21} />
-            <span className="text-[10.5px] font-semibold" style={{ color: T.section, letterSpacing: ".12em", textTransform: "uppercase" }}>
-              Mon · April 21 · the week ahead
-            </span>
           </div>
           <div style={{ height: 2, background: "rgba(58,51,44,.55)" }} />
           <div className="mt-[2px]" style={{ height: 1, background: "rgba(58,51,44,.25)" }} />
