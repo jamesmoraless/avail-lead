@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support, HomeHeader } from "./_kit";
 
 /* R5 · The Horizon.
    The week to payday is a sunrise. The sun sits low on Monday and climbs
@@ -89,12 +89,11 @@ export function HomePath() {
       <StatusBar />
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        {/* the leaf has a little air on its left; pull it in so it lines up with the greeting */}
-        <div className="pl-[22px] pr-[26px] pt-[16px] av-fade d1">
-          <Wordmark size={23} />
+        <div className="av-fade d1">
+          <HomeHeader />
         </div>
 
-        <div className="px-[26px] mt-[18px] av-rise d2" style={{ minHeight: 146 }}>
+        <div className="px-[26px] mt-[28px] av-rise d2" style={{ minHeight: 146 }}>
           <Greeting>Good morning, Todd.</Greeting>
           <div key={day.d + String(carried)} className="av-fade">
             <Hero tone={friday ? P.terracotta : C.fern} className="mt-[16px]">

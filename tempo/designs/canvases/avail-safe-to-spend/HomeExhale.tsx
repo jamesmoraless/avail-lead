@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support, HomeHeader } from "./_kit";
 
 /* R1 · Exhale.
    A paper disc and your breath. HOLD the disc to breathe — an arc times
@@ -118,12 +118,11 @@ export function HomeExhale() {
       <StatusBar />
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        {/* the leaf has a little air on its left; pull it in so it lines up with the greeting */}
-        <div className="pl-[22px] pr-[26px] pt-[16px] av-fade d1">
-          <Wordmark size={23} />
+        <div className="av-fade d1">
+          <HomeHeader />
         </div>
 
-        <div className="px-[26px] mt-[20px] av-rise d2">
+        <div className="px-[26px] mt-[28px] av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
         </div>
 

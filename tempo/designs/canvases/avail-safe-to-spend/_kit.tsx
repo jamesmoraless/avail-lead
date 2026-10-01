@@ -459,7 +459,21 @@ export const T = {
   amount: "#5E574F",
 };
 
-export function Greeting({ children, size = 21 }: { children: React.ReactNode; size?: number }) {
+/** The home header: the wordmark on the left, the person on the right. Reads as chrome, not content. */
+export function HomeHeader({ initial = "T" }: { initial?: string }) {
+  return (
+    <div className="pl-[23px] pr-[24px] pt-[14px] flex items-center justify-between">
+      <Wordmark size={21} />
+      <div className="av-press w-[32px] h-[32px] rounded-full flex items-center justify-center cursor-pointer" style={{ background: "#E4EAE1", boxShadow: "inset 0 0 0 1px rgba(111,143,114,.25)" }} aria-label="you">
+        <span className="av-serif" style={{ fontSize: 15, color: C.fern, lineHeight: 1, fontWeight: 500 }}>
+          {initial}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export function Greeting({ children, size = 24 }: { children: React.ReactNode; size?: number }) {
   return (
     <div className="av-serif" style={{ fontSize: size, color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
       {children}
