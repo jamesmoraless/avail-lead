@@ -69,14 +69,14 @@ export function HomeLetter() {
               Good morning, Todd.
             </div>
             <div
-              className="av-count av-tnum inline-block mt-[14px]"
+              className="av-count av-tnum inline-block mt-[18px]"
               style={{ fontSize: 60, lineHeight: 1, color: C.fern, letterSpacing: "-0.04em", borderBottom: `1.5px dotted ${how ? C.sage : "rgba(111,143,114,.45)"}`, paddingBottom: 2, transition: "border-color .3s" }}
               onClick={stop(() => setHow((h) => !h))}
               title="tap to see how"
             >
               $2,487<span style={{ fontSize: 26, opacity: 0.55 }}>.36</span>
             </div>
-            <div className="av-serif italic text-[16px] mt-[8px]" style={{ color: T.support }}>
+            <div className="av-serif italic text-[16px] mt-[12px]" style={{ color: T.support }}>
               is yours today. Every bill is covered.
             </div>
 

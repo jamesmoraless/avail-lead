@@ -104,10 +104,10 @@ export function HomeCurtain() {
 
         <div className="px-[26px] mt-[18px] av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
-          <Hero key={c.number} className="av-count mt-[10px]">
+          <Hero key={c.number} className="av-count mt-[16px]">
             {c.number}
           </Hero>
-          <Support className="mt-[4px]">is yours today. Every bill is covered.</Support>
+          <Support className="mt-[9px]">is yours today. Every bill is covered.</Support>
         </div>
 
         {/* ---------- a Scandinavian window: white frame, a cross in the glass, a pot on the sill ---------- */}

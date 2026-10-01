@@ -96,10 +96,10 @@ export function HomePath() {
         <div className="px-[26px] mt-[18px] av-rise d2" style={{ minHeight: 146 }}>
           <Greeting>Good morning, Todd.</Greeting>
           <div key={day.d + String(carried)} className="av-fade">
-            <Hero tone={friday ? P.terracotta : C.fern} className="mt-[10px]">
+            <Hero tone={friday ? P.terracotta : C.fern} className="mt-[16px]">
               {day.n}
             </Hero>
-            <Support className="mt-[4px]">{day.s}</Support>
+            <Support className="mt-[9px]">{day.s}</Support>
           </div>
         </div>
 

@@ -162,10 +162,10 @@ export function HomeForecast() {
         <div className="px-[26px] mt-[18px] av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
           <div key={asking ? thing || "n" : "idle"} className="av-fade">
-            <Hero tone={tone} className="mt-[10px]">
+            <Hero tone={tone} className="mt-[16px]">
               ${asking ? left : 94}
             </Hero>
-            <Support className="mt-[4px]">{asking ? `would be left for the week, after ${thing || "that"}.` : "is yours today, and $243 through Friday."}</Support>
+            <Support className="mt-[9px]">{asking ? `would be left for the week, after ${thing || "that"}.` : "is yours today, and $243 through Friday."}</Support>
           </div>
         </div>
 
