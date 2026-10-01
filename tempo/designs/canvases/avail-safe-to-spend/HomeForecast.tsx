@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Quote, Greeting, Hero, Support, HomeHeader, Sheet } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Quote, Greeting, Hero, Support } from "./_kit";
 
 /* R3 · The Forecast.
    "Can I afford this?" answered the way people already talk about the days
@@ -155,11 +155,19 @@ export function HomeForecast() {
     <Phone>
       <StatusBar />
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        <div className="av-fade d1">
-          <HomeHeader />
+        {/* Forecast reads like a morning almanac: a masthead, a double rule, the week in columns */}
+        <div className="px-[26px] pt-[14px] av-fade d1">
+          <div className="flex items-end justify-between pb-[10px]">
+            <Wordmark size={21} />
+            <span className="text-[10.5px] font-semibold" style={{ color: T.section, letterSpacing: ".12em", textTransform: "uppercase" }}>
+              Mon · April 21 · the week ahead
+            </span>
+          </div>
+          <div style={{ height: 2, background: "rgba(58,51,44,.55)" }} />
+          <div className="mt-[2px]" style={{ height: 1, background: "rgba(58,51,44,.25)" }} />
         </div>
 
-        <div className="px-[26px] mt-[28px] av-rise d2">
+        <div className="px-[26px] mt-[22px] av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
           <div key={asking ? thing || "n" : "idle"} className="av-fade">
             <Hero tone={tone} className="mt-[16px]">
@@ -177,6 +185,10 @@ export function HomeForecast() {
             {/* the hills the week sits on */}
             <path d="M-6 104C70 92 120 106 190 98S300 84 396 94V132H-6Z" fill={grey ? "#B8C3B1" : "#BCCDB2"} opacity=".9" className="av-wc" style={{ transition: "fill 1.2s ease" }} />
             <path d="M-6 116C80 108 150 120 230 110S330 102 396 108V132H-6Z" fill={grey ? P.leaf : P.moss} opacity=".7" className="av-wc" style={{ transition: "fill 1.2s ease" }} />
+            {/* almanac columns: a hairline between each day */}
+            {X.slice(0, -1).map((x, i) => (
+              <line key={i} x1={(x + X[i + 1]) / 2} x2={(x + X[i + 1]) / 2} y1="24" y2="170" stroke="rgba(58,51,44,.12)" strokeWidth="1" />
+            ))}
             {DAYS.map((d, i) => (
               <g key={d}>
                 <Day x={X[i]} sky={skies[i]} payday={i === 4} />
@@ -191,7 +203,9 @@ export function HomeForecast() {
           </svg>
         </div>
 
-        <Sheet className="mt-[22px]">
+        <div className="mt-[14px]">
+          {/* a single rule closes the almanac's weather column */}
+          <div className="mx-[26px]" style={{ height: 1, background: "rgba(58,51,44,.25)" }} />
           {/* ---------- can I afford it? a shelf of everyday things ---------- */}
           <div className="px-[26px] pt-[16px] pb-[6px] av-rise d5">
             <div className="av-serif" style={{ fontSize: 20, color: T.ink, lineHeight: 1.3 }}>
@@ -254,7 +268,7 @@ export function HomeForecast() {
               </div>
             </div>
           </div>
-        </Sheet>
+        </div>
         <div className="absolute left-0 right-0 bottom-[118px] px-[40px]" style={{ opacity: asking ? 0 : 1, transition: "opacity .4s" }}>
           <Quote text="Enough is a feast." by="Buddhist proverb" align="center" />
         </div>

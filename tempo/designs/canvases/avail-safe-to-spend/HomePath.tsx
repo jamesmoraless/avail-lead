@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support, HomeHeader, Sheet } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Aside, Hand, Greeting, Hero, Section, Support, HomeHeader } from "./_kit";
 
 /* R5 · The Horizon.
    The week to payday is a sunrise. The sun sits low on Monday and climbs
@@ -84,8 +84,8 @@ export function HomePath() {
   return (
     <Phone light={false}>
       {/* the whole screen is the morning sky; it warms as the week goes on */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#E3E8E1 0%,#EEEDE4 40%,#F4EFE5 62%, #F7F2EA 100%)" }} />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#F6D9BC 0%,#F7E6D2 38%,rgba(247,238,226,0) 62%)", opacity: 0.25 + t * 0.75, transition: ease }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#D5E0DD 0%,#E2E7E0 22%,#EFEBE0 42%,#F5E6D2 58%,#F4EBDD 70%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#F3D2B2 0%,#F6DEC4 38%,rgba(247,238,226,0) 64%)", opacity: 0.15 + t * 0.85, transition: ease }} />
       <StatusBar />
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
@@ -180,7 +180,8 @@ export function HomePath() {
         </div>
 
         {/* ---------- this week, on the paper below the grass ---------- */}
-        <Sheet className="av-rise d5">
+        {/* Horizon is a landscape: sky above, then the hills, then the ground the week stands on */}
+        <div className="relative av-rise d5" style={{ marginTop: -2, minHeight: 600, background: "linear-gradient(180deg,#B9C9AB 0%,#D3DDC6 46px,#DFE6D5 120px,#E6EBDD 100%)" }}>
           <div className="px-[26px] pt-[12px] pb-[4px]">
           <Section>This week</Section>
           {[
@@ -213,7 +214,7 @@ export function HomePath() {
             </div>
           ))}
           </div>
-        </Sheet>
+        </div>
       </div>
       <TabBar active="today" />
     </Phone>

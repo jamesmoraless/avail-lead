@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support, HomeHeader, Sheet } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Section, Support } from "./_kit";
 
 /* R1 · Exhale.
    A paper disc and your breath. HOLD the disc to breathe — an arc times
@@ -118,11 +118,12 @@ export function HomeExhale() {
       <StatusBar />
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
-        <div className="av-fade d1">
-          <HomeHeader />
+        {/* Exhale is symmetrical, like a breath: everything sits on one centre line */}
+        <div className="pt-[16px] flex justify-center av-fade d1">
+          <Wordmark size={21} />
         </div>
 
-        <div className="px-[26px] mt-[28px] av-rise d2">
+        <div className="px-[26px] mt-[26px] text-center av-rise d2">
           <Greeting>Good morning, Todd.</Greeting>
         </div>
 
@@ -213,10 +214,25 @@ export function HomeExhale() {
           </div>
         </div>
 
-        <Sheet className="mt-[20px]">
+        {/* the separator is a breath: rings spreading from a still centre */}
+        <div className="flex justify-center mt-[6px]" aria-hidden>
+          <svg width="120" height="22" viewBox="0 0 120 22" fill="none">
+            <path d="M8 11 H44" stroke="url(#exL)" strokeWidth="1" />
+            <path d="M76 11 H112" stroke="url(#exR)" strokeWidth="1" />
+            <circle cx="60" cy="11" r="9" stroke={P.leaf} strokeOpacity=".22" strokeWidth="1" />
+            <circle cx="60" cy="11" r="5.5" stroke={P.leaf} strokeOpacity=".4" strokeWidth="1" />
+            <circle cx="60" cy="11" r="2" fill={P.leaf} fillOpacity=".7" />
+            <defs>
+              <linearGradient id="exL" x1="8" x2="44" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor={P.leaf} stopOpacity="0" /><stop offset="1" stopColor={P.leaf} stopOpacity=".35" /></linearGradient>
+              <linearGradient id="exR" x1="76" x2="112" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop stopColor={P.leaf} stopOpacity=".35" /><stop offset="1" stopColor={P.leaf} stopOpacity="0" /></linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div className="mt-[4px]">
           {/* ---------- how does money feel? — a question, then three words ---------- */}
-          <div className="px-[30px] pt-[16px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
-            <Section>This morning, money feels</Section>
+          <div className="px-[30px] pt-[8px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
+            <Section className="text-center">This morning, money feels</Section>
             {/* three small objects: a stone, a leaf, a feather */}
             <div className="grid grid-cols-3 gap-[10px] mt-[12px]">
               {(["heavy", "okay", "light"] as Mood[]).map((w) => {
@@ -248,7 +264,7 @@ export function HomeExhale() {
             {/* the reply — the one line that speaks */}
             <div className="mt-[18px]" style={{ minHeight: 26 }}>
               <div key={(mood ?? "none") + String(allDone)} className="av-fade">
-                <Support>{allDone && m ? "That's the whole day. Go enjoy it." : m ? m.line : "Every bill is covered."}</Support>
+                <Support className="text-center">{allDone && m ? "That's the whole day. Go enjoy it." : m ? m.line : "Every bill is covered."}</Support>
               </div>
             </div>
 
@@ -258,7 +274,7 @@ export function HomeExhale() {
               ))}
             </div>
           </div>
-        </Sheet>
+        </div>
       </div>
       <TabBar active="today" />
     </Phone>

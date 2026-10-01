@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Hero, Section, Support, HomeHeader, Sheet } from "./_kit";
+import { C, P, T, Phone, StatusBar, TabBar, Wordmark, Task, Aside, WindowLight, Hand, Greeting, Hero, Section, Support, HomeHeader } from "./_kit";
 
 /* R2 · The Curtain.
    The number is the hero, above the window. The curtain is drawn; behind it,
@@ -203,9 +203,8 @@ export function HomeCurtain() {
               ))}
             </div>
           </div>
-          {/* the sill, and a pot of something green on it */}
-          <div className="relative mx-[-8px] h-[10px] rounded-[3px]" style={{ background: "linear-gradient(180deg,#F6F1E8,#E7DFD2)", boxShadow: "0 8px 12px -8px rgba(58,51,44,.4)" }} />
-          <svg className="absolute pointer-events-none" width="58" height="66" viewBox="0 0 58 66" style={{ left: 6, bottom: 6 }}>
+          {/* a pot of something green, standing on the sill below */}
+          <svg className="absolute pointer-events-none z-20" width="58" height="66" viewBox="0 0 58 66" style={{ left: 6, bottom: -8 }}>
             <path d="M29 36 C 22 24, 10 20, 4 22 C 8 30, 18 36, 29 38Z" fill={P.leaf} opacity=".9" className="av-wc-sm" />
             <path d="M29 36 C 34 20, 46 12, 54 14 C 52 26, 42 34, 29 38Z" fill={P.moss} opacity=".9" className="av-wc-sm" />
             <path d="M29 38 C 28 22, 30 10, 36 2 C 40 14, 36 28, 29 38Z" fill={P.forest} opacity=".85" className="av-wc-sm" />
@@ -222,9 +221,13 @@ export function HomeCurtain() {
           </div>
         </div>
 
-        <Sheet className="mt-[14px]">
+        {/* ---------- the room is the layer: a wide oak sill, then the painted wall-panelling below the window ---------- */}
+        <div className="relative z-10 h-[11px]" style={{ background: "linear-gradient(180deg,#EBDCC4 0%,#D9C3A2 100%)", boxShadow: "0 6px 10px -6px rgba(92,66,36,.45), inset 0 1px 0 rgba(255,250,240,.7)" }} />
+        <div className="relative" style={{ background: "#E2E6DB", minHeight: 600 }}>
+          {/* tongue-and-groove boards, barely there */}
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(90deg, rgba(58,51,44,0) 0px, rgba(58,51,44,0) 47px, rgba(58,51,44,.055) 47px, rgba(58,51,44,.055) 48px, rgba(255,255,255,.35) 48px, rgba(255,255,255,.35) 49px)" }} />
           {/* ---------- the cushion: a stack of pillows you can add to ---------- */}
-          <div className="px-[30px] mt-[14px] flex items-center gap-[16px] av-rise d4">
+          <div className="relative px-[30px] pt-[16px] flex items-center gap-[16px] av-rise d4">
             <PillowStack count={cushion + 1} onTap={() => setCushion((v) => (v + 1) % 3)} />
             <div className="flex-1 min-w-0">
               <div key={c.label} className="av-fade">
@@ -243,12 +246,12 @@ export function HomeCurtain() {
             </div>
           </div>
 
-          <div className="px-[30px] mt-[12px] av-rise d5">
+          <div className="relative px-[30px] mt-[12px] av-rise d5">
             <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things today"}</Section>
             <Task first title="Move $120 to savings" value="$120" py={11} done={done[0]} onToggle={() => setDone([!done[0], done[1]])} />
             <Task title="Pay the electric bill" value="$142.36" py={11} done={done[1]} onToggle={() => setDone([done[0], !done[1]])} />
           </div>
-        </Sheet>
+        </div>
       </div>
       <TabBar active="today" />
     </Phone>
