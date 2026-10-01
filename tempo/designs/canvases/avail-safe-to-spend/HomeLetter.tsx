@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { C, P, T, Phone, StatusBar, TabBar, Tick, Hand, Section, HomeHeader } from "./_kit";
 
 /* R4 · The Letter.
@@ -27,49 +27,23 @@ export function HomeLetter() {
   const paperShadow = "0 24px 40px -26px rgba(92,66,36,.55), 0 2px 3px rgba(92,66,36,.12)";
   const paper = "linear-gradient(180deg,#FFFDF8 0%,#FBF7EF 100%)";
 
-  return (
-    <Phone light={false}>
-      {/* a pale linen surface in morning light; a plant by the window throws soft leaf shadows across it */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(165deg,#F3EEE6 0%,#EEE7DC 55%,#E8E0D3 100%)" }} />
-      {/* the weave of the linen, barely there */}
-      <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%" style={{ opacity: 0.22, mixBlendMode: "multiply" }}>
-        <filter id="letter-linen">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.06" numOctaves="2" seed="3" />
-          <feColorMatrix values="0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .42  0 0 0 .5 0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#letter-linen)" />
-      </svg>
-      {/* window light, falling in two soft panes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden av-fade d1">
-        <div className="absolute" style={{ left: -40, top: 60, width: 380, height: 560, transform: "skewX(-18deg) rotate(-6deg)", filter: "blur(18px)", opacity: 0.75 }}>
-          <div className="absolute" style={{ left: 0, top: 0, width: 160, height: 540, background: "rgba(255,249,236,.85)" }} />
-          <div className="absolute" style={{ left: 178, top: 0, width: 160, height: 540, background: "rgba(255,249,236,.7)" }} />
-        </div>
-      </div>
-      {/* a second, fainter branch lower down, further from the glass */}
-      <div className="absolute pointer-events-none av-fade d3" style={{ left: -60, bottom: 60, width: 260, height: 300 }}>
-        <svg width="260" height="300" viewBox="0 0 260 300" className="av-sway" style={{ filter: "blur(8px)", transformOrigin: "0% 100%", opacity: 0.7 }}>
-          <g fill="rgba(84,72,54,.12)">
-            <path d="M10 290 C 60 220, 110 170, 190 120" fill="none" stroke="rgba(84,72,54,.1)" strokeWidth="3" />
-            <path d="M80 210 C 70 170, 90 140, 130 125 C 135 165, 115 195, 80 210 Z" />
-            <path d="M120 180 C 160 185, 195 175, 220 150 C 185 135, 145 145, 120 180 Z" />
-            <path d="M45 255 C 20 230, 15 200, 30 170 C 55 195, 60 225, 45 255 Z" />
-          </g>
-        </svg>
-      </div>
+  /* a real fold: the letter is creased across its middle; the bottom half swings up over the top */
+  const measureRef = useRef<HTMLDivElement>(null);
+  const [H, setH] = useState(0);
+  useLayoutEffect(() => {
+    const el = measureRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setH(el.offsetHeight));
+    ro.observe(el);
+    setH(el.offsetHeight);
+    return () => ro.disconnect();
+  }, []);
+  const half = Math.ceil(H / 2);
+  const shown = H ? (open ? half * 2 : half) : "auto";
+  const FOLD = ".9s cubic-bezier(.5,.05,.2,1)";
 
-      <StatusBar />
-
-      {/* ---------- today's note, then the earlier ones folded beneath it ---------- */}
-      <div className="relative z-10 h-full pt-[44px] pb-[88px] flex flex-col items-center">
-        <div className="w-full av-fade d1">
-          <HomeHeader />
-        </div>
-        <div className="relative av-rise d2 mt-[22px]" style={{ width: 318, cursor: "pointer", transform: "rotate(-1.2deg)", background: paper, borderRadius: 3, boxShadow: paperShadow, overflow: "hidden" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
-          {/* the note, open: its height eases between closed and open, so nothing below jumps */}
-          <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .6s cubic-bezier(.32,.72,0,1)" }}>
-          <div style={{ minHeight: 0, overflow: "hidden" }}>
-          <div style={{ opacity: open ? 1 : 0, transform: open ? "none" : "translateY(-12px)", transition: open ? "opacity .4s ease .15s, transform .6s cubic-bezier(.32,.72,0,1)" : "opacity .18s ease, transform .5s cubic-bezier(.32,.72,0,1)" }}>
+  const noteBody = (
+    <>
           <div className="relative px-[30px] pt-[26px] pb-[14px]">
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
               Good morning, Todd.
@@ -109,7 +83,7 @@ export function HomeLetter() {
             </div>
           </div>
           <div className="relative">
-            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ background: "linear-gradient(180deg,#F3EDE2 0%,#FBF7EF 14%,#FFFDF8 100%)" }}>
+            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ borderTop: "1px dashed rgba(58,51,44,.12)" }}>
               <Section>{allDone ? "Both done." : "Two small things"}</Section>
               {[
                 ["Move $120 to savings", ""],
@@ -151,22 +125,81 @@ export function HomeLetter() {
               </div>
             </div>
           </div>
-          </div>
-          </div>
-          </div>
+    </>
+  );
 
-          {/* the note, folded: just the outside, addressed to Todd */}
-          <div style={{ display: "grid", gridTemplateRows: open ? "0fr" : "1fr", transition: "grid-template-rows .6s cubic-bezier(.32,.72,0,1)" }} aria-hidden={open}>
-          <div style={{ minHeight: 0, overflow: "hidden" }}>
-            <div className="relative px-[30px] h-[112px] flex items-center justify-between" style={{ background: "linear-gradient(180deg,#FBF7EF,#F6F0E5)", opacity: open ? 0 : 1, transition: open ? "opacity .18s ease" : "opacity .4s ease .2s" }}>
-              <Hand size={32} tone={C.fern} rotate={-2}>
-                for Todd
-              </Hand>
-              <span className="av-serif italic text-[14px]" style={{ color: C.muted }}>
-                tap to open
-              </span>
+  return (
+    <Phone light={false}>
+      {/* a pale linen surface in morning light; a plant by the window throws soft leaf shadows across it */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(165deg,#F3EEE6 0%,#EEE7DC 55%,#E8E0D3 100%)" }} />
+      {/* the weave of the linen, barely there */}
+      <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%" style={{ opacity: 0.22, mixBlendMode: "multiply" }}>
+        <filter id="letter-linen">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9 0.06" numOctaves="2" seed="3" />
+          <feColorMatrix values="0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .42  0 0 0 .5 0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#letter-linen)" />
+      </svg>
+      {/* window light, falling in two soft panes */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden av-fade d1">
+        <div className="absolute" style={{ left: -40, top: 60, width: 380, height: 560, transform: "skewX(-18deg) rotate(-6deg)", filter: "blur(18px)", opacity: 0.75 }}>
+          <div className="absolute" style={{ left: 0, top: 0, width: 160, height: 540, background: "rgba(255,249,236,.85)" }} />
+          <div className="absolute" style={{ left: 178, top: 0, width: 160, height: 540, background: "rgba(255,249,236,.7)" }} />
+        </div>
+      </div>
+      {/* a second, fainter branch lower down, further from the glass */}
+      <div className="absolute pointer-events-none av-fade d3" style={{ left: -60, bottom: 60, width: 260, height: 300 }}>
+        <svg width="260" height="300" viewBox="0 0 260 300" className="av-sway" style={{ filter: "blur(8px)", transformOrigin: "0% 100%", opacity: 0.7 }}>
+          <g fill="rgba(84,72,54,.12)">
+            <path d="M10 290 C 60 220, 110 170, 190 120" fill="none" stroke="rgba(84,72,54,.1)" strokeWidth="3" />
+            <path d="M80 210 C 70 170, 90 140, 130 125 C 135 165, 115 195, 80 210 Z" />
+            <path d="M120 180 C 160 185, 195 175, 220 150 C 185 135, 145 145, 120 180 Z" />
+            <path d="M45 255 C 20 230, 15 200, 30 170 C 55 195, 60 225, 45 255 Z" />
+          </g>
+        </svg>
+      </div>
+
+      <StatusBar />
+
+      {/* ---------- today's note, then the earlier ones folded beneath it ---------- */}
+      <div className="relative z-10 h-full pt-[44px] pb-[88px] flex flex-col items-center">
+        <div className="w-full av-fade d1">
+          <HomeHeader />
+        </div>
+        <div className="relative av-rise d2 mt-[22px]" style={{ width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
+          {/* the paper's shadow follows its folded height */}
+          <div className="absolute inset-x-0 top-0 pointer-events-none" style={{ height: shown, boxShadow: paperShadow, borderRadius: 3, transition: `height ${FOLD}` }} />
+          <div className="relative" style={{ height: H ? shown : "auto", perspective: 1800, transition: `height ${FOLD}` }}>
+            {/* the top half stays on the desk */}
+            <div className="relative overflow-hidden" style={{ height: H ? half : "auto", background: paper, borderRadius: H ? "3px 3px 0 0" : 3 }}>
+              <div ref={measureRef}>{noteBody}</div>
+              {/* the lower half's shadow falls across it as it folds over */}
+              <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(0deg, rgba(92,66,36,.2), rgba(92,66,36,0) 75%)", opacity: open ? 0 : 1, transition: `opacity ${FOLD}` }} />
             </div>
-          </div>
+
+            {/* the bottom half, hinged on the crease */}
+            {H > 0 && (
+              <div className="absolute inset-x-0" style={{ top: half, height: half, transformOrigin: "top center", transformStyle: "preserve-3d", transform: `rotateX(${open ? 0 : 180}deg)`, transition: `transform ${FOLD}` }}>
+                {/* front: the rest of the letter */}
+                <div className="absolute inset-0 overflow-hidden" aria-hidden style={{ background: paper, borderRadius: "0 0 3px 3px", backfaceVisibility: "hidden" }}>
+                  <div style={{ transform: `translateY(${-half}px)` }}>{noteBody}</div>
+                  {/* it darkens as it turns away from the light */}
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(92,66,36,.24), rgba(92,66,36,.08))", opacity: open ? 0 : 1, transition: `opacity ${FOLD}` }} />
+                </div>
+                {/* back: the outside of the note, addressed to Todd */}
+                <div className="absolute inset-0 flex items-center justify-between px-[30px]" style={{ background: "linear-gradient(180deg,#F7F1E6,#FBF7EF)", borderRadius: "3px 3px 0 0", backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}>
+                  <Hand size={34} tone={C.fern} rotate={-2}>
+                    for Todd
+                  </Hand>
+                  <span className="av-serif italic text-[14px]" style={{ color: C.muted }}>
+                    tap to open
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* the crease, still faintly there once it's open */}
+            {H > 0 && <div className="absolute inset-x-[8px] pointer-events-none" style={{ top: half - 1, height: 2, background: "linear-gradient(180deg, rgba(58,51,44,.05), rgba(255,255,255,.6))", opacity: open ? 1 : 0, transition: `opacity ${FOLD}` }} />}
           </div>
         </div>
 
