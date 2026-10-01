@@ -109,6 +109,8 @@ export function AvailStyles() {
 .av-quote { animation: av-quote 1.4s ease 1s both; }
 @keyframes av-ripple { 0% { transform: scale(.5); opacity:.8 } 100% { transform: scale(1.7); opacity:0 } }
 .av-ripple { transform-box: fill-box; transform-origin: center; animation: av-ripple 1.3s ease-out forwards; }
+@keyframes av-unfold { from { opacity: 0; transform: translateY(-6px) scaleY(.96); } to { opacity: 1; transform: none; } }
+.av-unfold { transform-origin: top center; animation: av-unfold .5s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes av-plump { 0% { transform: scale(1,.72) } 45% { transform: scale(.96,1.12) } 75% { transform: scale(1.02,.97) } 100% { transform: none } }
 .av-plump { animation: av-plump .6s cubic-bezier(.3,1.2,.5,1) both; }
 @keyframes av-ring { 0% { transform: scale(.74); opacity:.45 } 100% { transform: scale(1.5); opacity:0 } }

@@ -66,7 +66,9 @@ export function HomeLetter() {
           <HomeHeader />
         </div>
         <div className="relative av-rise d2 mt-[22px]" style={{ perspective: 1400, width: 318, cursor: "pointer", transform: "rotate(-1.2deg)" }} role="button" aria-expanded={open} aria-label={open ? "Today's note from Avail. Tap to fold it." : "A folded note for Todd. Tap to open it."} tabIndex={0} onClick={() => setOpen((o) => !o)} onKeyDown={(e) => e.key === "Enter" && setOpen((o) => !o)}>
-          {/* top half */}
+          {/* the note, open: top half */}
+          {open && (
+          <div key="open-top" className="av-unfold">
           <div className="relative px-[30px] pt-[26px] pb-[14px]" style={{ background: paper, borderRadius: "3px 3px 0 0", boxShadow: paperShadow }}>
             <div className="av-serif text-[21px]" style={{ color: T.ink, lineHeight: 1.25, fontWeight: 450 }}>
               Good morning, Todd.
@@ -105,10 +107,13 @@ export function HomeLetter() {
               </div>
             </div>
           </div>
+          </div>
+          )}
 
-          {/* bottom half — folds up over the top */}
-          <div className="relative" style={{ transformStyle: "preserve-3d", transformOrigin: "top center", transform: `rotateX(${open ? 0 : -180}deg)`, transition: "transform 1s cubic-bezier(.3,.9,.3,1)" }}>
-            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ background: "linear-gradient(180deg,#F3EDE2 0%,#FBF7EF 14%,#FFFDF8 100%)", borderRadius: "0 0 3px 3px", boxShadow: paperShadow, backfaceVisibility: "hidden" }}>
+          {/* the note, open: bottom half */}
+          {open && (
+          <div key="open-bottom" className="relative av-unfold" style={{ animationDelay: ".08s" }}>
+            <div className="px-[30px] pt-[14px] pb-[22px]" style={{ background: "linear-gradient(180deg,#F3EDE2 0%,#FBF7EF 14%,#FFFDF8 100%)", borderRadius: "0 0 3px 3px", boxShadow: paperShadow }}>
               <Section>{allDone ? "Both done." : "Two small things"}</Section>
               {[
                 ["Move $120 to savings", ""],
@@ -149,15 +154,20 @@ export function HomeLetter() {
                 </svg>
               </div>
             </div>
-            <div className="absolute inset-0 px-[30px] flex items-center justify-between" style={{ background: "#FAF4E9", borderRadius: "4px 4px 0 0", boxShadow: paperShadow, backfaceVisibility: "hidden", transform: "rotateX(180deg)" }}>
+          </div>
+          )}
+
+          {/* the note, folded: just the outside, addressed to Todd */}
+          {!open && (
+            <div key="folded" className="relative px-[30px] h-[112px] flex items-center justify-between av-fade" style={{ background: "linear-gradient(180deg,#FBF7EF,#F6F0E5)", borderRadius: 3, boxShadow: paperShadow }}>
               <Hand size={32} tone={C.fern} rotate={-2}>
                 for Todd
               </Hand>
               <span className="av-serif italic text-[14px]" style={{ color: C.muted }}>
-                this morning
+                tap to open
               </span>
             </div>
-          </div>
+          )}
         </div>
 
         {/* a letter comes every morning; the earlier ones collect here, folded */}
