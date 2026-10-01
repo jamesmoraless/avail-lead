@@ -27,7 +27,7 @@ const CARRIED: Day[] = [
 ];
 
 const W = 390;
-const H = 296;
+const H = 270;
 const HORIZON = 176;
 const X0 = 52;
 const X1 = 346;
@@ -83,9 +83,8 @@ export function HomePath() {
 
   return (
     <Phone light={false}>
-      {/* the whole screen is the morning sky; it warms as the week goes on */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#D5E0DD 0%,#E2E7E0 22%,#EFEBE0 42%,#F5E6D2 58%,#F4EBDD 70%)" }} />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg,#F3D2B2 0%,#F6DEC4 38%,rgba(247,238,226,0) 64%)", opacity: 0.15 + t * 0.85, transition: ease }} />
+      {/* the page is plain cream paper; the landscape is a painted panorama inside it, not a wallpaper behind it */}
+      <div className="absolute inset-0" style={{ background: C.cream }} />
       <StatusBar />
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
@@ -105,7 +104,10 @@ export function HomePath() {
 
         {/* ---------- the week, painted as a sunrise ---------- */}
         <div ref={sceneRef} className="relative av-pop d3" style={{ height: H, cursor: "ew-resize", touchAction: "none" }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-          <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" style={{ display: "block", overflow: "visible" }}>
+          {/* the sky lives only in the panorama: it rises out of the paper and warms toward Friday */}
+          <div className="absolute inset-x-0 pointer-events-none" style={{ top: 0, height: HORIZON + 10, background: "linear-gradient(180deg, rgba(228,233,226,0) 0%, rgba(228,233,226,.85) 30%, #EEE7DA 70%, #F3DCC3 100%)" }} />
+          <div className="absolute inset-x-0 pointer-events-none" style={{ top: 0, height: HORIZON + 10, background: "linear-gradient(180deg, rgba(247,242,234,0) 10%, #F4D3B2 100%)", opacity: 0.1 + t * 0.7, transition: ease }} />
+          <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" style={{ display: "block", overflow: "visible", position: "relative" }}>
             {/* two slow clouds */}
             <g className="av-drift">
               <ellipse cx="250" cy="34" rx="34" ry="9" fill="#FFFFFF" opacity=".7" className="av-wc" />
@@ -180,8 +182,11 @@ export function HomePath() {
         </div>
 
         {/* ---------- this week, on the paper below the grass ---------- */}
-        {/* Horizon is a landscape: sky above, then the hills, then the ground the week stands on */}
-        <div className="relative av-rise d5" style={{ marginTop: -2, minHeight: 600, background: "linear-gradient(180deg,#B9C9AB 0%,#D3DDC6 46px,#DFE6D5 120px,#E6EBDD 100%)" }}>
+        {/* the panorama ends in a torn painted edge; the week sits back on the paper */}
+        <div className="relative av-rise d5" style={{ marginTop: -16, minHeight: 600, background: C.cream }}>
+          <svg className="absolute left-0 right-0" style={{ top: -10, width: "100%", height: 24 }} viewBox="0 0 390 24" preserveAspectRatio="none">
+            <path d="M-10 13 C 60 3, 130 15, 200 9 S 330 3, 400 11 V30 H-10 Z" fill={C.cream} className="av-wc" />
+          </svg>
           <div className="px-[26px] pt-[12px] pb-[4px]">
           <Section>This week</Section>
           {[
