@@ -459,14 +459,11 @@ export const T = {
   amount: "#5E574F",
 };
 
-/** A resting paper card for the day's things: inset from both edges, all corners rounded, ending with its content.
- *  It gives the screen a second layer without looking like a draggable bottom sheet (no handle, no full-bleed, no run-off). */
+/** A change of surface, not an object: the day's things sit on a slightly deeper oat band that runs edge to edge,
+ *  starting at one fine hairline. No corners, no shadow, no handle — so it never reads as a card or a sheet. */
 export function Sheet({ children, className = "", style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <div
-      className={`relative mx-[14px] rounded-[22px] pt-[6px] pb-[8px] ${className}`}
-      style={{ background: "rgba(253,251,247,.88)", boxShadow: "0 14px 30px -22px rgba(58,51,44,.35), 0 1px 2px rgba(58,51,44,.05), inset 0 0 0 1px rgba(58,51,44,.05)", ...style }}
-    >
+    <div className={`relative pt-[4px] ${className}`} style={{ background: "#F1EBE1", borderTop: "1px solid rgba(58,51,44,.09)", minHeight: 600, ...style }}>
       {children}
     </div>
   );

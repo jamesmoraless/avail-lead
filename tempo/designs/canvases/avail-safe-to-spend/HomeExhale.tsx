@@ -215,7 +215,7 @@ export function HomeExhale() {
 
         <Sheet className="mt-[20px]">
           {/* ---------- how does money feel? — a question, then three words ---------- */}
-          <div className="px-[16px] pt-[10px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
+          <div className="px-[30px] pt-[16px]" style={{ opacity: ready ? 1 : 0, transform: `translateY(${ready ? 0 : 8}px)`, transition: "opacity 1.4s ease .2s, transform 1.4s ease .2s", pointerEvents: ready ? "auto" : "none" }}>
             <Section>This morning, money feels</Section>
             {/* three small objects: a stone, a leaf, a feather */}
             <div className="grid grid-cols-3 gap-[10px] mt-[12px]">

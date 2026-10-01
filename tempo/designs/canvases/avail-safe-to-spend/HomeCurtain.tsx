@@ -224,7 +224,7 @@ export function HomeCurtain() {
 
         <Sheet className="mt-[14px]">
           {/* ---------- the cushion: a stack of pillows you can add to ---------- */}
-          <div className="px-[16px] mt-[10px] flex items-center gap-[16px] av-rise d4">
+          <div className="px-[30px] mt-[14px] flex items-center gap-[16px] av-rise d4">
             <PillowStack count={cushion + 1} onTap={() => setCushion((v) => (v + 1) % 3)} />
             <div className="flex-1 min-w-0">
               <div key={c.label} className="av-fade">
@@ -243,7 +243,7 @@ export function HomeCurtain() {
             </div>
           </div>
 
-          <div className="px-[16px] mt-[12px] av-rise d5">
+          <div className="px-[30px] mt-[12px] av-rise d5">
             <Section className="px-[4px] mb-[2px]">{allDone ? "Both done. Go enjoy the day." : "Two small things today"}</Section>
             <Task first title="Move $120 to savings" value="$120" py={11} done={done[0]} onToggle={() => setDone([!done[0], done[1]])} />
             <Task title="Pay the electric bill" value="$142.36" py={11} done={done[1]} onToggle={() => setDone([done[0], !done[1]])} />

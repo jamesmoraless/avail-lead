@@ -193,7 +193,7 @@ export function HomeForecast() {
 
         <Sheet className="mt-[22px]">
           {/* ---------- can I afford it? a shelf of everyday things ---------- */}
-          <div className="px-[16px] pt-[12px] pb-[6px] av-rise d5">
+          <div className="px-[26px] pt-[16px] pb-[6px] av-rise d5">
             <div className="av-serif" style={{ fontSize: 20, color: T.ink, lineHeight: 1.3 }}>
               Thinking of something?
             </div>
