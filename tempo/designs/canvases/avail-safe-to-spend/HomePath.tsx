@@ -90,7 +90,7 @@ export function HomePath() {
 
       <div className="relative z-10 h-full pt-[44px] overflow-hidden select-none">
         <div className="px-[26px] pt-[16px] av-fade d1">
-          <Wordmark size={18} />
+          <Wordmark size={23} />
         </div>
 
         <div className="px-[26px] mt-[18px] av-rise d2" style={{ minHeight: 146 }}>
